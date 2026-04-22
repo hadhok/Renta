@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Renta — Investissement Locatif</title>
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="/Renta/manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Renta">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="/Renta/icons/icon-192.png">
 <meta name="theme-color" content="#0071e3">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -690,7 +690,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 <script>
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
+    window.addEventListener('load', () => navigator.serviceWorker.register('/Renta/sw.js', { scope: '/Renta/' }));
   }
 </script>
 </body>

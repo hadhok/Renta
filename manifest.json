@@ -2,14 +2,15 @@
   "name": "Renta",
   "short_name": "Renta",
   "description": "Calculateur d'investissement locatif",
-  "start_url": "/",
+  "start_url": "/Renta/",
+  "scope": "/Renta/",
   "display": "standalone",
   "background_color": "#f5f5f7",
   "theme_color": "#0071e3",
   "orientation": "portrait",
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "/Renta/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/Renta/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/Renta/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }
