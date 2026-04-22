@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Simulateur Investissement Immobilier</title>
+<title>Renta — Investissement Locatif</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -24,33 +24,49 @@ body{
   background:var(--bg);
   color:var(--text);
   min-height:100vh;
-  padding:28px 16px calc(72px + env(safe-area-inset-bottom));
+  padding-bottom:calc(88px + env(safe-area-inset-bottom));
 }
-header{text-align:center;margin-bottom:28px}
-header h1{font-size:26px;font-weight:700;letter-spacing:-.5px}
-header p{font-size:14px;color:var(--text2);margin-top:4px}
-.stack{display:flex;flex-direction:column;gap:16px;max-width:600px;margin:0 auto}
+
+/* ── App header ──────────────────────────────────────────────────────────── */
+.app-header{
+  background:linear-gradient(180deg,#fff 0%,#f5f5f7 100%);
+  text-align:center;
+  padding:44px 16px 28px;
+  border-bottom:1px solid rgba(0,0,0,.06);
+  margin-bottom:24px;
+}
+.app-header h1{
+  font-size:38px;font-weight:800;letter-spacing:-.8px;
+  background:linear-gradient(135deg,#1d1d1f 40%,#0071e3 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.app-header p{font-size:15px;color:var(--text2);margin-top:6px;font-weight:400}
+
+/* ── Stack ───────────────────────────────────────────────────────────────── */
+.stack{display:flex;flex-direction:column;gap:24px;max-width:600px;margin:0 auto;padding:0 16px}
+
+/* ── Card ────────────────────────────────────────────────────────────────── */
 .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
-.card-title{font-size:20px;font-weight:700;letter-spacing:-.3px;margin-bottom:18px;display:flex;align-items:center;gap:8px}
-/* Fields */
+.card-title{
+  font-size:17px;font-weight:700;letter-spacing:-.2px;
+  margin-bottom:18px;
+  display:flex;align-items:center;gap:9px;
+  padding-left:11px;
+  border-left:3px solid var(--accent);
+  line-height:1.3;
+}
+
+/* ── Fields ──────────────────────────────────────────────────────────────── */
 .field{margin-bottom:16px}
 .field:last-child{margin-bottom:0}
-label{display:block;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:6px;letter-spacing:.1px}
+label{display:block;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px;letter-spacing:.1px}
 input[type=text],input[type=number],select{
-  width:100%;
-  height:48px;
-  padding:0 14px;
-  font-size:17px;
-  font-family:inherit;
-  font-variant-numeric:tabular-nums;
-  border:1.5px solid var(--border);
-  border-radius:12px;
-  background:#fff;
-  color:var(--text);
-  outline:none;
+  width:100%;height:48px;padding:0 14px;
+  font-size:17px;font-family:inherit;font-variant-numeric:tabular-nums;
+  border:1.5px solid var(--border);border-radius:12px;
+  background:#fff;color:var(--text);outline:none;
   transition:border-color .15s,box-shadow .15s;
-  -moz-appearance:textfield;
-  appearance:textfield;
+  -moz-appearance:textfield;appearance:textfield;
 }
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
@@ -59,140 +75,177 @@ input[type=text]:focus,input[type=number]:focus,select:focus{
   box-shadow:0 0 0 3px rgba(0,113,227,.15);
 }
 .hint{font-size:11px;color:var(--text2);margin-top:5px}
-/* Toggle */
-.toggle-group{display:flex;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;height:48px}
-.toggle-group button{
-  flex:1;font-size:15px;font-family:inherit;font-weight:500;border:none;
-  background:transparent;cursor:pointer;transition:background .15s,color .15s;color:var(--text2);
+
+/* ── Segmented control ───────────────────────────────────────────────────── */
+.segmented{
+  display:flex;
+  background:#e5e5ea;
+  border-radius:9px;
+  padding:2px;
+  height:40px;
 }
-.toggle-group button.active{background:var(--accent);color:#fff}
-/* Slider */
+.seg-btn{
+  flex:1;border:none;border-radius:7px;
+  font-size:15px;font-weight:500;font-family:inherit;
+  background:transparent;color:#3c3c43;cursor:pointer;
+  transition:all .2s;
+}
+.seg-btn.active{
+  background:#fff;color:#000;
+  box-shadow:0 1px 3px rgba(0,0,0,.15);
+}
+
+/* ── Notaire info ────────────────────────────────────────────────────────── */
+.notaire-info{
+  background:#f0f6ff;border-radius:10px;
+  padding:10px 14px;font-size:12px;color:#0051a2;
+  margin-top:10px;line-height:1.6;display:none;
+}
+.notaire-info.visible{display:block}
+
+/* ── Select ──────────────────────────────────────────────────────────────── */
+select{
+  appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236e6e73' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;
+  padding-right:36px;
+}
+
+/* ── Stepper ─────────────────────────────────────────────────────────────── */
+.stepper-field{
+  display:flex;align-items:center;
+  background:#f2f2f7;border-radius:12px;overflow:hidden;
+}
+.step-btn{
+  width:48px;height:48px;
+  font-size:24px;font-weight:300;line-height:1;
+  background:none;border:none;
+  color:var(--accent);cursor:pointer;flex-shrink:0;
+  font-family:inherit;transition:background .1s;
+  -webkit-user-select:none;user-select:none;
+}
+.step-btn:active{background:#e5e5ea}
+.stepper-field input{
+  flex:1;min-width:0;
+  text-align:center;
+  border:none;background:transparent;
+  font-size:17px;font-weight:500;font-family:inherit;
+  font-variant-numeric:tabular-nums;
+  height:48px;outline:none;color:var(--text);
+}
+
+/* ── Duration slider ─────────────────────────────────────────────────────── */
+.duree-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.duree-row label{margin-bottom:0}
+.duree-val{font-size:13px;font-weight:600;color:var(--accent)}
 input[type=range]{
-  -webkit-appearance:none;
-  appearance:none;
-  width:100%;
-  height:4px;
+  -webkit-appearance:none;appearance:none;
+  width:100%;height:4px;
   background:linear-gradient(to right,var(--accent) var(--pct,0%),#d1d1d6 var(--pct,0%));
-  border-radius:2px;
-  outline:none;
-  cursor:pointer;
-  margin:4px 0 10px;
-  display:block;
+  border-radius:2px;outline:none;cursor:pointer;display:block;
 }
 input[type=range]::-webkit-slider-thumb{
   -webkit-appearance:none;
-  width:22px;height:22px;
-  background:#fff;
-  border:2px solid var(--accent);
-  border-radius:50%;
-  box-shadow:0 1px 4px rgba(0,0,0,.2);
-  cursor:pointer;
+  width:22px;height:22px;background:#fff;
+  border:2px solid var(--accent);border-radius:50%;
+  box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:pointer;
 }
 input[type=range]::-moz-range-thumb{
-  width:22px;height:22px;
-  background:#fff;
-  border:2px solid var(--accent);
-  border-radius:50%;
-  box-shadow:0 1px 4px rgba(0,0,0,.2);
-  cursor:pointer;
-  border:2px solid var(--accent);
+  width:22px;height:22px;background:#fff;
+  border:2px solid var(--accent);border-radius:50%;
+  box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:pointer;
 }
-.range-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
-.range-header label{margin-bottom:0}
-.range-val{font-size:13px;font-weight:600;color:var(--accent)}
-/* Notaire info */
-.notaire-info{background:#f0f6ff;border-radius:10px;padding:10px 14px;font-size:12px;color:#0051a2;margin-top:8px;line-height:1.6;display:none}
-.notaire-info.visible{display:block}
-/* Select */
-select{
-  appearance:none;
-  -webkit-appearance:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236e6e73' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;
-  background-position:right 14px center;
-  padding-right:36px;
-}
-/* Results */
+
+/* ── Results / metrics ───────────────────────────────────────────────────── */
 .metric{background:var(--bg);border-radius:12px;padding:14px 16px}
 .metric-label{font-size:11px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
 .metric-value{
-  font-size:28px;font-weight:700;letter-spacing:-.5px;
+  font-size:32px;font-weight:700;letter-spacing:-.5px;
   font-variant-numeric:tabular-nums;
-  transition:color .2s;
+  color:var(--accent);transition:color .2s;
 }
 .metric-value.positive{color:var(--positive)}
 .metric-value.negative{color:var(--negative)}
 .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* ── Yield rows ──────────────────────────────────────────────────────────── */
 .yield-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f0f0f0}
 .yield-row:last-child{border-bottom:none}
 .yield-label{font-size:14px;color:var(--text2)}
-.yield-value{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.yield-value{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--accent)}
 .yield-value.positive{color:var(--positive)}
 .yield-value.negative{color:var(--negative)}
-/* Regime cards — vertical stack */
+
+/* ── Regime cards ────────────────────────────────────────────────────────── */
+.regimes{display:flex;flex-direction:column;gap:10px}
 .regime-card{
-  background:var(--bg);border-radius:14px;padding:16px;
-  border:2px solid transparent;transition:border-color .2s;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;
+  background:var(--bg);border-radius:14px;
+  overflow:hidden;
+  border:1.5px solid transparent;
+  transition:border-color .2s,background .2s;
 }
-.regime-card.best{border-color:var(--positive);background:rgba(52,199,89,.07)}
-.regime-card.disabled{opacity:.45}
+.regime-card.best{border-color:var(--positive);background:rgba(52,199,89,.06)}
+.regime-card.disabled{opacity:.4}
+.regime-top-bar{height:3px;width:100%}
+.regime-body{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px}
 .regime-left{flex:1}
-.regime-name{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
-.regime-rate{font-size:12px;color:var(--text2);margin-top:2px}
+.regime-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+.regime-rate{font-size:12px;color:var(--text2)}
 .regime-right{text-align:right}
-.regime-cf{font-size:26px;font-weight:700;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.regime-cf{font-size:28px;font-weight:700;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
 .regime-cf.positive{color:var(--positive)}
 .regime-cf.negative{color:var(--negative)}
-.best-badge{display:inline-block;background:var(--positive);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;margin-top:4px}
-.regimes{display:flex;flex-direction:column;gap:10px}
-/* TRI */
+.best-badge{
+  display:inline-flex;align-items:center;gap:3px;
+  background:var(--positive);color:#fff;
+  font-size:11px;font-weight:700;
+  padding:3px 8px;border-radius:20px;margin-top:4px;
+}
+
+/* ── TRI ─────────────────────────────────────────────────────────────────── */
 .tri-value{font-size:52px;font-weight:700;letter-spacing:-1px;text-align:center;padding:8px 0;font-variant-numeric:tabular-nums}
 .tri-note{font-size:12px;color:var(--text2);text-align:center;margin-top:4px}
-/* Chart */
+
+/* ── Chart ───────────────────────────────────────────────────────────────── */
 .chart-wrap{position:relative;height:200px;margin-top:8px}
-/* Flash animation */
+
+/* ── Flash ───────────────────────────────────────────────────────────────── */
 @keyframes valueFlash{
-  0%{background:rgba(255,214,10,.35);border-radius:6px}
+  0%{background:rgba(255,214,10,.4);border-radius:6px}
   100%{background:transparent}
 }
 .flashing{animation:valueFlash .5s ease-out}
-/* Sticky bar */
+
+/* ── Sticky bottom bar ───────────────────────────────────────────────────── */
 .sticky-bar{
-  position:fixed;
-  bottom:0;left:0;right:0;
-  background:rgba(255,255,255,.92);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   border-top:1px solid rgba(0,0,0,.1);
-  padding:12px 24px env(safe-area-inset-bottom);
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
+  padding:10px 12px env(safe-area-inset-bottom);
+  display:flex;justify-content:space-around;align-items:center;
   z-index:100;
 }
-.sticky-item{text-align:center}
-.sticky-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.4px}
-.sticky-val{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;transition:color .2s}
+.sticky-item{text-align:center;flex:1}
+.sticky-label{font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.sticky-val{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;transition:color .2s;line-height:1.2}
 .sticky-val.positive{color:var(--positive)}
 .sticky-val.negative{color:var(--negative)}
-.sticky-sep{width:1px;height:36px;background:var(--border)}
-/* Duree row */
-.duree-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
-.duree-row label{margin-bottom:0}
-.duree-val{font-size:13px;font-weight:600;color:var(--accent)}
-/* Field pairs */
+.sticky-sep{width:1px;height:36px;background:var(--border);flex-shrink:0}
+
+/* ── Field pairs ─────────────────────────────────────────────────────────── */
 .field-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:380px){.field-pair{grid-template-columns:1fr}}
-@media(max-width:380px){.summary-grid{grid-template-columns:1fr}}
+@media(max-width:380px){
+  .field-pair{grid-template-columns:1fr}
+  .summary-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Investissement Locatif</h1>
-  <p>Simulateur de rentabilité en temps réel</p>
+<header class="app-header">
+  <h1>Renta</h1>
+  <p>Calculateur d'investissement locatif</p>
 </header>
 
 <div class="stack">
@@ -202,21 +255,20 @@ select{
   <div class="card-title">🏠 Le bien</div>
 
   <div class="field">
-    <div class="range-header">
-      <label for="prix">Prix d'achat</label>
-      <span class="range-val" id="prixRangeVal"></span>
+    <label for="prix">Prix d'achat</label>
+    <div class="stepper-field">
+      <button type="button" class="step-btn" data-field="prix" data-step="-5000">−</button>
+      <input type="text" id="prix" value="200000" inputmode="decimal" class="money-input"
+             oninput="onMoney(this)" placeholder="200 000">
+      <button type="button" class="step-btn" data-field="prix" data-step="5000">+</button>
     </div>
-    <input type="range" id="prix-slider" min="50000" max="2000000" step="5000" value="200000"
-           data-input="prix" oninput="onSlider(this)">
-    <input type="text" id="prix" value="200000" inputmode="decimal" class="money-input" data-slider="prix-slider"
-           oninput="onMoney(this)" placeholder="200 000">
   </div>
 
   <div class="field">
     <label>Type de bien</label>
-    <div class="toggle-group">
-      <button class="active" onclick="setToggle('ancienNeuf','ancien',this)">Ancien</button>
-      <button onclick="setToggle('ancienNeuf','neuf',this)">Neuf</button>
+    <div class="segmented">
+      <button type="button" class="seg-btn active" onclick="setSeg('ancienNeuf','ancien',this)">Ancien</button>
+      <button type="button" class="seg-btn" onclick="setSeg('ancienNeuf','neuf',this)">Neuf</button>
     </div>
     <input type="hidden" id="ancienNeuf" value="ancien">
   </div>
@@ -224,14 +276,13 @@ select{
   <div id="notaireInfo" class="notaire-info"></div>
 
   <div class="field" style="margin-top:16px">
-    <div class="range-header">
-      <label for="travaux">Travaux</label>
-      <span class="range-val" id="travauxRangeVal"></span>
+    <label for="travaux">Travaux</label>
+    <div class="stepper-field">
+      <button type="button" class="step-btn" data-field="travaux" data-step="-1000">−</button>
+      <input type="text" id="travaux" value="0" inputmode="decimal" class="money-input"
+             oninput="onMoney(this)" placeholder="0">
+      <button type="button" class="step-btn" data-field="travaux" data-step="1000">+</button>
     </div>
-    <input type="range" id="travaux-slider" min="0" max="300000" step="1000" value="0"
-           data-input="travaux" oninput="onSlider(this)">
-    <input type="text" id="travaux" value="0" inputmode="decimal" class="money-input" data-slider="travaux-slider"
-           oninput="onMoney(this)" placeholder="0">
   </div>
 
   <div class="field">
@@ -246,14 +297,13 @@ select{
   <div class="card-title">💰 Financement</div>
 
   <div class="field">
-    <div class="range-header">
-      <label for="apport">Apport</label>
-      <span class="range-val" id="apportRangeVal"></span>
+    <label for="apport">Apport</label>
+    <div class="stepper-field">
+      <button type="button" class="step-btn" data-field="apport" data-step="-1000">−</button>
+      <input type="text" id="apport" value="40000" inputmode="decimal" class="money-input"
+             oninput="onMoney(this)" placeholder="40 000">
+      <button type="button" class="step-btn" data-field="apport" data-step="1000">+</button>
     </div>
-    <input type="range" id="apport-slider" min="0" max="500000" step="1000" value="40000"
-           data-input="apport" oninput="onSlider(this)">
-    <input type="text" id="apport" value="40000" inputmode="decimal" class="money-input" data-slider="apport-slider"
-           oninput="onMoney(this)" placeholder="40 000">
   </div>
 
   <div class="field-pair">
@@ -275,7 +325,7 @@ select{
       <span class="duree-val" id="dureeLabel">20 ans</span>
     </div>
     <input type="range" id="duree" min="5" max="30" value="20" step="1"
-           oninput="document.getElementById('dureeLabel').textContent=this.value+' ans';updateSliderFill(this);calc()">
+           oninput="$('dureeLabel').textContent=this.value+' ans';updateSliderFill(this);calc()">
   </div>
 </div>
 
@@ -284,26 +334,33 @@ select{
   <div class="card-title">🏘️ Exploitation</div>
 
   <div class="field">
-    <div class="range-header">
-      <label for="loyer">Loyer mensuel</label>
-      <span class="range-val" id="loyerRangeVal"></span>
+    <label for="loyer">Loyer mensuel</label>
+    <div class="stepper-field">
+      <button type="button" class="step-btn" data-field="loyer" data-step="-50">−</button>
+      <input type="text" id="loyer" value="900" inputmode="decimal" class="money-input"
+             oninput="onMoney(this)" placeholder="900">
+      <button type="button" class="step-btn" data-field="loyer" data-step="50">+</button>
     </div>
-    <input type="range" id="loyer-slider" min="200" max="5000" step="50" value="900"
-           data-input="loyer" oninput="onSlider(this)">
-    <input type="text" id="loyer" value="900" inputmode="decimal" class="money-input" data-slider="loyer-slider"
-           oninput="onMoney(this)" placeholder="900">
   </div>
 
   <div class="field-pair">
     <div class="field">
       <label for="charges">Charges copro /mois</label>
-      <input type="text" id="charges" value="80" inputmode="decimal" class="money-input"
-             oninput="onMoney(this)" placeholder="80">
+      <div class="stepper-field">
+        <button type="button" class="step-btn" data-field="charges" data-step="-50">−</button>
+        <input type="text" id="charges" value="80" inputmode="decimal" class="money-input"
+               oninput="onMoney(this)" placeholder="80">
+        <button type="button" class="step-btn" data-field="charges" data-step="50">+</button>
+      </div>
     </div>
     <div class="field">
       <label for="taxeFonciere">Taxe foncière /an</label>
-      <input type="text" id="taxeFonciere" value="1200" inputmode="decimal" class="money-input"
-             oninput="onMoney(this)" placeholder="1 200">
+      <div class="stepper-field">
+        <button type="button" class="step-btn" data-field="taxeFonciere" data-step="-100">−</button>
+        <input type="text" id="taxeFonciere" value="1200" inputmode="decimal" class="money-input"
+               oninput="onMoney(this)" placeholder="1 200">
+        <button type="button" class="step-btn" data-field="taxeFonciere" data-step="100">+</button>
+      </div>
     </div>
   </div>
 
@@ -397,50 +454,67 @@ select{
 <div class="card">
   <div class="card-title">⚖️ Régimes fiscaux</div>
   <div class="regimes">
+
     <div class="regime-card" id="card-microFoncier">
-      <div class="regime-left">
-        <div class="regime-name">Location nue — Micro-foncier</div>
-        <div class="regime-rate" id="rate-microFoncier"></div>
-        <span id="badge-microFoncier"></span>
-      </div>
-      <div class="regime-right">
-        <div class="regime-cf" id="cf-microFoncier">—</div>
-        <div style="font-size:11px;color:var(--text2)">/mois</div>
+      <div class="regime-top-bar" style="background:#af52de"></div>
+      <div class="regime-body">
+        <div class="regime-left">
+          <div class="regime-name">Nu — Micro-foncier</div>
+          <div class="regime-rate" id="rate-microFoncier"></div>
+          <span id="badge-microFoncier"></span>
+        </div>
+        <div class="regime-right">
+          <div class="regime-cf" id="cf-microFoncier">—</div>
+          <div style="font-size:11px;color:var(--text2)">/mois</div>
+        </div>
       </div>
     </div>
+
     <div class="regime-card" id="card-reel">
-      <div class="regime-left">
-        <div class="regime-name">Location nue — Réel</div>
-        <div class="regime-rate" id="rate-reel"></div>
-        <span id="badge-reel"></span>
-      </div>
-      <div class="regime-right">
-        <div class="regime-cf" id="cf-reel">—</div>
-        <div style="font-size:11px;color:var(--text2)">/mois</div>
+      <div class="regime-top-bar" style="background:#0071e3"></div>
+      <div class="regime-body">
+        <div class="regime-left">
+          <div class="regime-name">Nu — Réel</div>
+          <div class="regime-rate" id="rate-reel"></div>
+          <span id="badge-reel"></span>
+        </div>
+        <div class="regime-right">
+          <div class="regime-cf" id="cf-reel">—</div>
+          <div style="font-size:11px;color:var(--text2)">/mois</div>
+        </div>
       </div>
     </div>
+
     <div class="regime-card" id="card-microBic">
-      <div class="regime-left">
-        <div class="regime-name">LMNP — Micro-BIC</div>
-        <div class="regime-rate" id="rate-microBic"></div>
-        <span id="badge-microBic"></span>
-      </div>
-      <div class="regime-right">
-        <div class="regime-cf" id="cf-microBic">—</div>
-        <div style="font-size:11px;color:var(--text2)">/mois</div>
+      <div class="regime-top-bar" style="background:#ff9500"></div>
+      <div class="regime-body">
+        <div class="regime-left">
+          <div class="regime-name">LMNP — Micro-BIC</div>
+          <div class="regime-rate" id="rate-microBic"></div>
+          <span id="badge-microBic"></span>
+        </div>
+        <div class="regime-right">
+          <div class="regime-cf" id="cf-microBic">—</div>
+          <div style="font-size:11px;color:var(--text2)">/mois</div>
+        </div>
       </div>
     </div>
+
     <div class="regime-card" id="card-lmnpReel">
-      <div class="regime-left">
-        <div class="regime-name">LMNP — Réel</div>
-        <div class="regime-rate" id="rate-lmnpReel"></div>
-        <span id="badge-lmnpReel"></span>
-      </div>
-      <div class="regime-right">
-        <div class="regime-cf" id="cf-lmnpReel">—</div>
-        <div style="font-size:11px;color:var(--text2)">/mois</div>
+      <div class="regime-top-bar" style="background:#34c759"></div>
+      <div class="regime-body">
+        <div class="regime-left">
+          <div class="regime-name">LMNP — Réel</div>
+          <div class="regime-rate" id="rate-lmnpReel"></div>
+          <span id="badge-lmnpReel"></span>
+        </div>
+        <div class="regime-right">
+          <div class="regime-cf" id="cf-lmnpReel">—</div>
+          <div style="font-size:11px;color:var(--text2)">/mois</div>
+        </div>
       </div>
     </div>
+
   </div>
   <p style="font-size:11px;color:var(--text2);margin-top:12px">
     * Prélèvements sociaux (17.2%) inclus. Micro-foncier limité à 15 000 €/an de loyers.
@@ -472,123 +546,81 @@ select{
   </div>
   <div class="sticky-sep"></div>
   <div class="sticky-item">
-    <div class="sticky-label">Rentabilité nette</div>
-    <div class="sticky-val" id="bar-renta">—</div>
+    <div class="sticky-label">Renta brute</div>
+    <div class="sticky-val" id="bar-rentaBrute">—</div>
+  </div>
+  <div class="sticky-sep"></div>
+  <div class="sticky-item">
+    <div class="sticky-label">Renta nette</div>
+    <div class="sticky-val" id="bar-rentaNette">—</div>
   </div>
 </div>
 
 <script>
-// ─── Formatters ───────────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────
 const fmtEur = v => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
-const fmtShort = v => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
 const $ = id => document.getElementById(id);
-
-// Parse a money text input (strips all non-digit chars)
-const parseM = id => parseInt(($( id).value || '0').replace(/\D/g,'') || '0', 10);
-// Parse a number input
+const parseM = id => { const el=$(id); return el ? parseInt((el.value||'0').replace(/\D/g,'')||'0',10) : 0; };
 const num = id => parseFloat($(id).value) || 0;
 
-// Format integer as French thousands (narrow no-break space U+202F)
-function fmtThousands(n) {
-  if (isNaN(n) || n === '') return '';
-  return Math.round(n).toLocaleString('fr-FR');
-}
-
-// ─── Money input handler ───────────────────────────────────────────────────
+// ─── Money input ──────────────────────────────────────────────────────────
 function onMoney(inp) {
   const pos = inp.selectionStart;
   const raw = inp.value;
-
-  // Count digits before cursor
   let digitsBeforeCursor = 0;
-  for (let i = 0; i < pos; i++) {
-    if (/\d/.test(raw[i])) digitsBeforeCursor++;
-  }
-
-  // Extract digits only
-  const digits = raw.replace(/\D/g, '');
-  if (!digits) {
-    inp.value = '';
-    syncInputToSlider(inp);
-    calc();
-    return;
-  }
-
+  for (let i = 0; i < pos; i++) { if (/\d/.test(raw[i])) digitsBeforeCursor++; }
+  const digits = raw.replace(/\D/g,'');
+  if (!digits) { inp.value = ''; calc(); return; }
   const n = parseInt(digits, 10);
-  const formatted = n.toLocaleString('fr-FR'); // uses U+202F
-
-  // Restore cursor by digit count
+  const formatted = n.toLocaleString('fr-FR');
   let dc = 0, newPos = 0;
   for (let i = 0; i < formatted.length; i++) {
     if (/\d/.test(formatted[i])) dc++;
     if (dc === digitsBeforeCursor) { newPos = i + 1; break; }
   }
   if (dc < digitsBeforeCursor) newPos = formatted.length;
-
   inp.value = formatted;
   inp.setSelectionRange(newPos, newPos);
-
-  syncInputToSlider(inp);
   calc();
 }
 
-function syncInputToSlider(inp) {
-  const sliderId = inp.dataset.slider;
-  if (!sliderId) return;
-  const slider = $(sliderId);
-  if (!slider) return;
-  const n = parseInt(inp.value.replace(/\D/g,'') || '0', 10);
-  const clamped = Math.min(Math.max(n, parseFloat(slider.min)), parseFloat(slider.max));
-  slider.value = clamped;
-  updateSliderFill(slider);
-  // Update range label
-  updateRangeLabel(slider, n);
-}
+// ─── Stepper logic ────────────────────────────────────────────────────────
+let _pressTimer = null, _pressInterval = null;
 
-// ─── Slider handler ────────────────────────────────────────────────────────
-function onSlider(slider) {
-  const inputId = slider.dataset.input;
-  if (inputId) {
-    const inp = $(inputId);
-    if (inp) inp.value = parseInt(slider.value, 10).toLocaleString('fr-FR');
-  }
-  updateSliderFill(slider);
-  updateRangeLabel(slider, parseFloat(slider.value));
+function stepField(fieldId, delta) {
+  const inp = $(fieldId);
+  if (!inp) return;
+  const cur = parseInt((inp.value||'0').replace(/\D/g,'')||'0', 10);
+  const next = Math.max(0, cur + delta);
+  inp.value = next.toLocaleString('fr-FR');
   calc();
 }
 
-function updateSliderFill(slider) {
-  const min = parseFloat(slider.min);
-  const max = parseFloat(slider.max);
-  const val = parseFloat(slider.value);
-  const pct = max > min ? ((val - min) / (max - min)) * 100 : 0;
-  slider.style.setProperty('--pct', pct.toFixed(2) + '%');
+function startPress(btn) {
+  const fieldId = btn.dataset.field;
+  const delta = parseInt(btn.dataset.step, 10);
+  stepField(fieldId, delta);
+  _pressTimer = setTimeout(() => {
+    _pressInterval = setInterval(() => stepField(fieldId, delta), 100);
+  }, 500);
 }
 
-// Update the small label showing slider current value
-function updateRangeLabel(slider, rawVal) {
-  const labelMap = {
-    'prix-slider': 'prixRangeVal',
-    'apport-slider': 'apportRangeVal',
-    'travaux-slider': 'travauxRangeVal',
-    'loyer-slider': 'loyerRangeVal',
-  };
-  const labelId = labelMap[slider.id];
-  if (!labelId) return;
-  const el = $(labelId);
-  if (!el) return;
-  el.textContent = fmtShort(rawVal !== undefined ? rawVal : parseFloat(slider.value));
+function endPress() {
+  clearTimeout(_pressTimer);
+  clearInterval(_pressInterval);
+  _pressTimer = null;
+  _pressInterval = null;
 }
 
-// ─── Toggle ────────────────────────────────────────────────────────────────
-function setToggle(hiddenId, val, btn) {
+// ─── Segmented control ────────────────────────────────────────────────────
+function setSeg(hiddenId, val, btn) {
   $(hiddenId).value = val;
-  btn.closest('.toggle-group').querySelectorAll('button').forEach(b => b.classList.remove('active'));
+  btn.closest('.segmented').querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   calc();
 }
 
-// ─── Flash ─────────────────────────────────────────────────────────────────
+// ─── Flash ────────────────────────────────────────────────────────────────
 function flash(id) {
   const e = $(id);
   if (!e) return;
@@ -597,27 +629,31 @@ function flash(id) {
   e.classList.add('flashing');
 }
 
-// ─── Math helpers ──────────────────────────────────────────────────────────
+// ─── Duration slider fill ─────────────────────────────────────────────────
+function updateSliderFill(slider) {
+  const min = parseFloat(slider.min), max = parseFloat(slider.max), val = parseFloat(slider.value);
+  const pct = max > min ? ((val - min) / (max - min)) * 100 : 0;
+  slider.style.setProperty('--pct', pct.toFixed(2) + '%');
+}
+
+// ─── Math helpers ─────────────────────────────────────────────────────────
 function pmt(principal, annualRate, years) {
   if (annualRate === 0) return principal / (years * 12);
-  const r = annualRate / 100 / 12;
-  const n = years * 12;
-  return principal * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+  const r = annualRate / 100 / 12, n = years * 12;
+  return principal * r * Math.pow(1+r,n) / (Math.pow(1+r,n) - 1);
 }
 
 function amortYear(principal, annualRate, years, year) {
   if (principal <= 0) return { interets: 0, solde: 0 };
-  const r = annualRate / 100 / 12;
-  const n = years * 12;
+  const r = annualRate / 100 / 12, n = years * 12;
   const m = pmt(principal, annualRate, years);
-  const startMonth = (year - 1) * 12 + 1;
-  const endMonth = year * 12;
+  const startMonth = (year-1)*12+1, endMonth = year*12;
   let solde;
   if (r > 0) {
-    const k = startMonth - 1;
-    solde = principal * Math.pow(1 + r, k) - m * (Math.pow(1 + r, k) - 1) / r;
+    const k = startMonth-1;
+    solde = principal * Math.pow(1+r,k) - m * (Math.pow(1+r,k)-1) / r;
   } else {
-    solde = principal - m * (startMonth - 1);
+    solde = principal - m * (startMonth-1);
   }
   if (solde < 0) return { interets: 0, solde: 0 };
   let interets = 0;
@@ -632,12 +668,10 @@ function amortYear(principal, annualRate, years, year) {
 
 function soldeDu(principal, annualRate, years, months) {
   if (principal <= 0) return 0;
-  if (annualRate === 0) return Math.max(0, principal - pmt(principal, 0, years) * months);
-  const r = annualRate / 100 / 12;
-  const n = years * 12;
-  const m = pmt(principal, annualRate, years);
-  const k = Math.min(months, n);
-  return Math.max(0, principal * Math.pow(1 + r, k) - m * (Math.pow(1 + r, k) - 1) / r);
+  if (annualRate === 0) return Math.max(0, principal - pmt(principal,0,years)*months);
+  const r = annualRate/100/12, n = years*12;
+  const m = pmt(principal, annualRate, years), k = Math.min(months, n);
+  return Math.max(0, principal*Math.pow(1+r,k) - m*(Math.pow(1+r,k)-1)/r);
 }
 
 function irr(cashflows, guess = 0.1) {
@@ -645,8 +679,8 @@ function irr(cashflows, guess = 0.1) {
   for (let iter = 0; iter < 200; iter++) {
     let npv = 0, dnpv = 0;
     for (let t = 0; t < cashflows.length; t++) {
-      npv  += cashflows[t] / Math.pow(1 + r, t);
-      dnpv -= t * cashflows[t] / Math.pow(1 + r, t + 1);
+      npv  += cashflows[t] / Math.pow(1+r, t);
+      dnpv -= t * cashflows[t] / Math.pow(1+r, t+1);
     }
     if (Math.abs(dnpv) < 1e-10) break;
     const rNew = r - npv / dnpv;
@@ -667,12 +701,8 @@ function notaireEmoluments(prix) {
 }
 
 function fraisNotaire(prix, type) {
-  const emoluments = notaireEmoluments(prix);
-  const debours = 1200;
-  const contrib = prix * 0.00715;
-  if (type === 'neuf') {
-    return emoluments + debours + contrib;
-  }
+  const emoluments = notaireEmoluments(prix), debours = 1200, contrib = prix * 0.00715;
+  if (type === 'neuf') return emoluments + debours + contrib;
   return prix * 0.0580665 + emoluments + debours + contrib;
 }
 
@@ -680,22 +710,22 @@ function fraisNotaire(prix, type) {
 let chartInstance = null;
 
 function calc() {
-  const prix     = parseM('prix');
-  const type     = $('ancienNeuf').value;
-  const travaux  = parseM('travaux');
-  const agence   = parseM('agence');
-  const apport   = parseM('apport');
-  const tauxE    = num('taux');
-  const duree    = num('duree');
-  const assEmp   = num('assuranceEmprunt');
-  const loyer    = parseM('loyer');
-  const charges  = parseM('charges');
-  const tfAn     = parseM('taxeFonciere');
-  const pnoAn    = parseM('assurancePNO');
-  const vacance  = num('vacance') / 100;
-  const gestion  = num('gestion') / 100;
-  const tmi      = parseFloat($('tmi').value);
-  const PS       = 0.172;
+  const prix    = parseM('prix');
+  const type    = $('ancienNeuf').value;
+  const travaux = parseM('travaux');
+  const agence  = parseM('agence');
+  const apport  = parseM('apport');
+  const tauxE   = num('taux');
+  const duree   = num('duree');
+  const assEmp  = num('assuranceEmprunt');
+  const loyer   = parseM('loyer');
+  const charges = parseM('charges');
+  const tfAn    = parseM('taxeFonciere');
+  const pnoAn   = parseM('assurancePNO');
+  const vacance = num('vacance') / 100;
+  const gestion = num('gestion') / 100;
+  const tmi     = parseFloat($('tmi').value);
+  const PS      = 0.172;
 
   // Frais de notaire
   const notaire    = fraisNotaire(prix, type);
@@ -710,17 +740,17 @@ function calc() {
   }
 
   // Opération
-  const prixRevient    = prix + notaire + travaux + agence;
-  const emprunt        = Math.max(0, prixRevient - apport);
-  const mensualite     = pmt(emprunt, tauxE, duree);
-  const assEmpAnnuelle = emprunt * assEmp / 100;
+  const prixRevient     = prix + notaire + travaux + agence;
+  const emprunt         = Math.max(0, prixRevient - apport);
+  const mensualite      = pmt(emprunt, tauxE, duree);
+  const assEmpAnnuelle  = emprunt * assEmp / 100;
   const mensualiteTotal = mensualite + assEmpAnnuelle / 12;
 
   // Loyers
-  const loyerAnnuel     = loyer * 12;
-  const loyerEffectif   = loyerAnnuel * (1 - vacance);
+  const loyerAnnuel      = loyer * 12;
+  const loyerEffectif    = loyerAnnuel * (1 - vacance);
   const chargesAnnuelles = charges * 12 + tfAn + pnoAn + loyerEffectif * gestion;
-  const loyerNet        = loyerEffectif - chargesAnnuelles;
+  const loyerNet         = loyerEffectif - chargesAnnuelles;
 
   // Rentabilités
   const rentaBrute = prixRevient > 0 ? loyerAnnuel / prixRevient * 100 : 0;
@@ -732,7 +762,8 @@ function calc() {
   setVal('out-prixRevient', fmtEur(prixRevient));
   setVal('out-emprunt',     fmtEur(emprunt));
   setVal('out-mensualite',  fmtEur(mensualiteTotal));
-  setColored('out-effort',  fmtEur(mensualiteTotal - loyerNet / 12), mensualiteTotal - loyerNet / 12 <= 0 ? 'positive' : 'negative');
+  setColored('out-effort',  fmtEur(mensualiteTotal - loyerNet/12),
+    mensualiteTotal - loyerNet/12 <= 0 ? 'positive' : 'negative');
 
   // Rentabilité
   setVal('out-rentaBrute', rentaBrute.toFixed(2) + '%');
@@ -741,14 +772,15 @@ function calc() {
   setColored('out-cfNet',  fmtEur(cfNet),  cfNet  >= 0 ? 'positive' : 'negative');
 
   // Sticky bar
-  setBarVal('bar-cf', fmtEur(cfNet), cfNet >= 0 ? 'positive' : 'negative');
-  setBarVal('bar-renta', rentaNette.toFixed(2) + '%', rentaNette >= 0 ? '' : 'negative');
+  setBarVal('bar-cf',         fmtEur(cfNet),               cfNet      >= 0 ? 'positive' : 'negative');
+  setBarVal('bar-rentaBrute', rentaBrute.toFixed(1) + '%', rentaBrute >= 5 ? 'positive' : '');
+  setBarVal('bar-rentaNette', rentaNette.toFixed(1) + '%', rentaNette >= 0 ? '' : 'negative');
 
   // Intérêts an 1
   const { interets: interetsAn1 } = amortYear(emprunt, tauxE, duree, 1);
   const interetsAn1Total = interetsAn1 + assEmpAnnuelle;
 
-  // ── Régimes fiscaux ────────────────────────────────────────────────────
+  // ── Régimes fiscaux ───────────────────────────────────────────────────
   const microFoncierOK = loyerAnnuel < 15000;
   let cfMF = null, effMF = null;
   if (microFoncierOK) {
@@ -757,34 +789,34 @@ function calc() {
     effMF = loyerEffectif > 0 ? tax / loyerEffectif : 0;
   }
 
-  const taxReelNu = Math.max(0, loyerEffectif - interetsAn1Total - chargesAnnuelles - travaux / 10) * (tmi + PS);
-  const cfReelNu  = (loyerNet - taxReelNu) / 12 - mensualiteTotal;
-  const effReelNu = loyerEffectif > 0 ? taxReelNu / loyerEffectif : 0;
+  const taxReelNu  = Math.max(0, loyerEffectif - interetsAn1Total - chargesAnnuelles - travaux/10) * (tmi + PS);
+  const cfReelNu   = (loyerNet - taxReelNu) / 12 - mensualiteTotal;
+  const effReelNu  = loyerEffectif > 0 ? taxReelNu / loyerEffectif : 0;
 
-  const taxMicroBic = Math.max(0, loyerEffectif * 0.50) * (tmi + PS);
-  const cfMicroBic  = (loyerNet - taxMicroBic) / 12 - mensualiteTotal;
-  const effMicroBic = loyerEffectif > 0 ? taxMicroBic / loyerEffectif : 0;
+  const taxMicroBic  = Math.max(0, loyerEffectif * 0.50) * (tmi + PS);
+  const cfMicroBic   = (loyerNet - taxMicroBic) / 12 - mensualiteTotal;
+  const effMicroBic  = loyerEffectif > 0 ? taxMicroBic / loyerEffectif : 0;
 
-  const amortBien   = prix * 0.03;
+  const amortBien    = prix * 0.03;
   const amortTravaux = travaux / 10;
-  const taxLMNP     = Math.max(0, loyerEffectif - interetsAn1Total - chargesAnnuelles - amortBien - amortTravaux) * (tmi + PS);
-  const cfLMNP      = (loyerNet - taxLMNP) / 12 - mensualiteTotal;
-  const effLMNP     = loyerEffectif > 0 ? taxLMNP / loyerEffectif : 0;
+  const taxLMNP      = Math.max(0, loyerEffectif - interetsAn1Total - chargesAnnuelles - amortBien - amortTravaux) * (tmi + PS);
+  const cfLMNP       = (loyerNet - taxLMNP) / 12 - mensualiteTotal;
+  const effLMNP      = loyerEffectif > 0 ? taxLMNP / loyerEffectif : 0;
 
   const candidates = [
     { id: 'microFoncier', cf: microFoncierOK ? cfMF : -Infinity },
-    { id: 'reel',    cf: cfReelNu },
-    { id: 'microBic',cf: cfMicroBic },
-    { id: 'lmnpReel',cf: cfLMNP },
+    { id: 'reel',         cf: cfReelNu },
+    { id: 'microBic',     cf: cfMicroBic },
+    { id: 'lmnpReel',     cf: cfLMNP },
   ];
   const bestCf = Math.max(...candidates.filter(c => isFinite(c.cf)).map(c => c.cf));
 
-  renderRegime('microFoncier', microFoncierOK ? cfMF : null,  effMF,     bestCf, !microFoncierOK, 'Non éligible (loyers ≥ 15 000 €/an)');
-  renderRegime('reel',    cfReelNu,  effReelNu,  bestCf);
-  renderRegime('microBic',cfMicroBic,effMicroBic,bestCf);
-  renderRegime('lmnpReel',cfLMNP,    effLMNP,    bestCf);
+  renderRegime('microFoncier', microFoncierOK ? cfMF : null, effMF,      bestCf, !microFoncierOK, 'Non éligible (loyers ≥ 15 000 €/an)');
+  renderRegime('reel',         cfReelNu,  effReelNu,  bestCf);
+  renderRegime('microBic',     cfMicroBic,effMicroBic,bestCf);
+  renderRegime('lmnpReel',     cfLMNP,    effLMNP,    bestCf);
 
-  // ── TRI 10 ans ─────────────────────────────────────────────────────────
+  // ── TRI 10 ans ────────────────────────────────────────────────────────
   const cfs = [-apport];
   for (let y = 1; y <= 10; y++) {
     const { interets } = amortYear(emprunt, tauxE, duree, y);
@@ -792,12 +824,12 @@ function calc() {
     const taxY   = Math.max(0, loyerEffectif - intTot - chargesAnnuelles - amortBien - amortTravaux) * (tmi + PS);
     cfs.push(loyerNet - taxY - mensualiteTotal * 12);
   }
-  const solde10 = soldeDu(emprunt, tauxE, duree, Math.min(duree * 12, 120));
+  const solde10 = soldeDu(emprunt, tauxE, duree, Math.min(duree*12, 120));
   cfs[10] += prix - solde10;
 
   let triVal = null;
   if (apport > 0 && emprunt > 0) {
-    try { triVal = irr(cfs, 0.08); } catch (e) { /* ignore */ }
+    try { triVal = irr(cfs, 0.08); } catch(e) {}
   }
   const triEl = $('out-tri');
   if (triVal !== null && isFinite(triVal) && triVal > -1 && triVal < 5) {
@@ -808,7 +840,7 @@ function calc() {
     triEl.style.color = 'var(--accent)';
   }
 
-  // ── Chart 20 ans ───────────────────────────────────────────────────────
+  // ── Chart 20 ans ──────────────────────────────────────────────────────
   const labels = [], data = [];
   for (let y = 1; y <= 20; y++) {
     labels.push('An ' + y);
@@ -827,37 +859,35 @@ function setVal(id, val) {
   if (e.textContent !== val) { e.textContent = val; flash(id); }
 }
 function setColored(id, val, cls) {
-  const e = $(id);
-  const changed = e.textContent !== val;
+  const e = $(id), changed = e.textContent !== val;
   e.textContent = val;
-  e.className = e.className.replace(/\b(positive|negative)\b/g, '').trim();
+  e.className = e.className.replace(/\b(positive|negative)\b/g,'').trim();
   if (cls) e.classList.add(cls);
   if (changed) flash(id);
 }
 function setBarVal(id, val, cls) {
-  const e = $(id);
-  const changed = e.textContent !== val;
+  const e = $(id), changed = e.textContent !== val;
   e.textContent = val;
   e.className = 'sticky-val' + (cls ? ' ' + cls : '');
   if (changed) flash(id);
 }
 
 function renderRegime(key, cf, eff, bestCf, disabled, disabledMsg) {
-  const card  = $('card-' + key);
-  const cfEl  = $('cf-' + key);
-  const rateEl= $('rate-' + key);
-  const badge = $('badge-' + key);
+  const card   = $('card-' + key);
+  const cfEl   = $('cf-'   + key);
+  const rateEl = $('rate-' + key);
+  const badge  = $('badge-'+ key);
   card.classList.remove('best', 'disabled');
   badge.innerHTML = '';
   if (disabled || cf === null) {
-    cfEl.textContent  = 'N/A';
-    cfEl.className    = 'regime-cf';
+    cfEl.textContent   = 'N/A';
+    cfEl.className     = 'regime-cf';
     rateEl.textContent = disabledMsg || '';
     card.classList.add('disabled');
     return;
   }
-  cfEl.textContent = fmtEur(cf);
-  cfEl.className   = 'regime-cf ' + (cf >= 0 ? 'positive' : 'negative');
+  cfEl.textContent   = fmtEur(cf);
+  cfEl.className     = 'regime-cf ' + (cf >= 0 ? 'positive' : 'negative');
   rateEl.textContent = 'Taux effectif : ' + (eff * 100).toFixed(1) + '%';
   if (Math.abs(cf - bestCf) < 0.01) {
     card.classList.add('best');
@@ -902,26 +932,26 @@ function renderChart(labels, data) {
 document.addEventListener('DOMContentLoaded', () => {
   // Format all money inputs
   document.querySelectorAll('.money-input').forEach(inp => {
-    const n = parseInt(inp.value.replace(/\D/g, '') || '0', 10);
-    inp.value = n > 0 ? n.toLocaleString('fr-FR') : (n === 0 ? '0' : '');
-    // Init linked slider
-    const sliderId = inp.dataset.slider;
-    if (sliderId) {
-      const slider = $(sliderId);
-      if (slider) {
-        slider.value = Math.min(Math.max(n, parseFloat(slider.min)), parseFloat(slider.max));
-        updateSliderFill(slider);
-        updateRangeLabel(slider, n);
-      }
-    }
+    const n = parseInt((inp.value||'0').replace(/\D/g,'')||'0', 10);
+    inp.value = n > 0 ? n.toLocaleString('fr-FR') : '0';
   });
 
-  // Init duree slider fill
+  // Wire stepper buttons
+  document.querySelectorAll('.step-btn').forEach(btn => {
+    btn.addEventListener('mousedown',   () => startPress(btn));
+    btn.addEventListener('touchstart',  e => { e.preventDefault(); startPress(btn); }, { passive: false });
+    btn.addEventListener('mouseup',     endPress);
+    btn.addEventListener('mouseleave',  endPress);
+    btn.addEventListener('touchend',    endPress);
+    btn.addEventListener('touchcancel', endPress);
+  });
+
+  // Init duration slider
   updateSliderFill($('duree'));
 
-  // Wire up number inputs (non-money) to trigger calc
+  // Wire number inputs and selects
   document.querySelectorAll('input[type=number], select').forEach(inp => {
-    inp.addEventListener('input', calc);
+    inp.addEventListener('input',  calc);
     inp.addEventListener('change', calc);
   });
 
