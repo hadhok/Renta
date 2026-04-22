@@ -4,62 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Renta — Investissement Locatif</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f5f5f7;
-  --card:#fff;
-  --accent:#0071e3;
-  --text:#1d1d1f;
-  --text2:#6e6e73;
-  --border:#d2d2d7;
-  --radius:18px;
-  --shadow:0 2px 20px rgba(0,0,0,.08);
-  --positive:#34c759;
-  --negative:#ff3b30;
+  --bg:#f5f5f7;--card:#fff;--accent:#0071e3;
+  --text:#1d1d1f;--text2:#6e6e73;--border:#d2d2d7;
+  --radius:18px;--shadow:0 2px 20px rgba(0,0,0,.08);
+  --positive:#34c759;--negative:#ff3b30;
 }
 body{
   font-family:-apple-system,"SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  padding-bottom:calc(88px + env(safe-area-inset-bottom));
+  background:var(--bg);color:var(--text);min-height:100vh;
+  padding:16px 0 calc(80px + env(safe-area-inset-bottom));
 }
-
-/* ── App header ──────────────────────────────────────────────────────────── */
-.app-header{
-  background:linear-gradient(180deg,#fff 0%,#f5f5f7 100%);
-  text-align:center;
-  padding:44px 16px 28px;
-  border-bottom:1px solid rgba(0,0,0,.06);
-  margin-bottom:24px;
-}
-.app-header h1{
-  font-size:38px;font-weight:800;letter-spacing:-.8px;
-  background:linear-gradient(135deg,#1d1d1f 40%,#0071e3 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.app-header p{font-size:15px;color:var(--text2);margin-top:6px;font-weight:400}
-
-/* ── Stack ───────────────────────────────────────────────────────────────── */
-.stack{display:flex;flex-direction:column;gap:24px;max-width:600px;margin:0 auto;padding:0 16px}
-
-/* ── Card ────────────────────────────────────────────────────────────────── */
-.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+.stack{display:flex;flex-direction:column;gap:16px;max-width:600px;margin:0 auto;padding:0 16px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
 .card-title{
-  font-size:17px;font-weight:700;letter-spacing:-.2px;
-  margin-bottom:18px;
+  font-size:17px;font-weight:700;letter-spacing:-.2px;margin-bottom:16px;
   display:flex;align-items:center;gap:9px;
-  padding-left:11px;
-  border-left:3px solid var(--accent);
-  line-height:1.3;
+  padding-left:11px;border-left:3px solid var(--accent);line-height:1.3;
 }
-
-/* ── Fields ──────────────────────────────────────────────────────────────── */
-.field{margin-bottom:16px}
+/* Fields */
+.field{margin-bottom:12px}
 .field:last-child{margin-bottom:0}
-label{display:block;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px;letter-spacing:.1px}
+label{display:block;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:6px;letter-spacing:.1px}
 input[type=text],input[type=number],select{
   width:100%;height:48px;padding:0 14px;
   font-size:17px;font-family:inherit;font-variant-numeric:tabular-nums;
@@ -71,160 +39,93 @@ input[type=text],input[type=number],select{
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
 input[type=text]:focus,input[type=number]:focus,select:focus{
-  border-color:var(--accent);
-  box-shadow:0 0 0 3px rgba(0,113,227,.15);
+  border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,113,227,.15);
 }
-.hint{font-size:11px;color:var(--text2);margin-top:5px}
-
-/* ── Segmented control ───────────────────────────────────────────────────── */
-.segmented{
-  display:flex;
-  background:#e5e5ea;
-  border-radius:9px;
-  padding:2px;
-  height:40px;
-}
+.hint{font-size:11px;color:var(--text2);margin-top:4px}
+/* Segmented */
+.segmented{display:flex;background:#e5e5ea;border-radius:9px;padding:2px;height:40px}
 .seg-btn{
   flex:1;border:none;border-radius:7px;
   font-size:15px;font-weight:500;font-family:inherit;
-  background:transparent;color:#3c3c43;cursor:pointer;
-  transition:all .2s;
+  background:transparent;color:#3c3c43;cursor:pointer;transition:all .2s;
 }
-.seg-btn.active{
-  background:#fff;color:#000;
-  box-shadow:0 1px 3px rgba(0,0,0,.15);
-}
-
-/* ── Notaire info ────────────────────────────────────────────────────────── */
+.seg-btn.active{background:#fff;color:#000;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+/* Notaire */
 .notaire-info{
-  background:#f0f6ff;border-radius:10px;
-  padding:10px 14px;font-size:12px;color:#0051a2;
-  margin-top:10px;line-height:1.6;display:none;
+  background:#f0f6ff;border-radius:10px;padding:9px 13px;
+  font-size:12px;color:#0051a2;margin-top:8px;line-height:1.6;display:none;
 }
 .notaire-info.visible{display:block}
-
-/* ── Select ──────────────────────────────────────────────────────────────── */
+/* Select arrow */
 select{
   appearance:none;-webkit-appearance:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236e6e73' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 14px center;
-  padding-right:36px;
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;
 }
-
-/* ── Stepper ─────────────────────────────────────────────────────────────── */
-.stepper-field{
-  display:flex;align-items:center;
-  background:#f2f2f7;border-radius:12px;overflow:hidden;
-}
+/* Stepper */
+.stepper-field{display:flex;align-items:center;background:#f2f2f7;border-radius:12px;overflow:hidden}
 .step-btn{
-  width:48px;height:48px;
-  font-size:24px;font-weight:300;line-height:1;
-  background:none;border:none;
-  color:var(--accent);cursor:pointer;flex-shrink:0;
-  font-family:inherit;transition:background .1s;
-  -webkit-user-select:none;user-select:none;
+  width:48px;height:48px;font-size:24px;font-weight:300;line-height:1;
+  background:none;border:none;color:var(--accent);cursor:pointer;flex-shrink:0;
+  font-family:inherit;transition:background .1s;-webkit-user-select:none;user-select:none;
 }
 .step-btn:active{background:#e5e5ea}
 .stepper-field input{
-  flex:1;min-width:0;
-  text-align:center;
-  border:none;background:transparent;
-  font-size:17px;font-weight:500;font-family:inherit;
-  font-variant-numeric:tabular-nums;
+  flex:1;min-width:0;text-align:center;border:none;background:transparent;
+  font-size:17px;font-weight:500;font-family:inherit;font-variant-numeric:tabular-nums;
   height:48px;outline:none;color:var(--text);
 }
-
-/* ── Duration slider ─────────────────────────────────────────────────────── */
+/* Duration slider */
 .duree-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .duree-row label{margin-bottom:0}
 .duree-val{font-size:13px;font-weight:600;color:var(--accent)}
 input[type=range]{
-  -webkit-appearance:none;appearance:none;
-  width:100%;height:4px;
+  -webkit-appearance:none;appearance:none;width:100%;height:4px;
   background:linear-gradient(to right,var(--accent) var(--pct,0%),#d1d1d6 var(--pct,0%));
   border-radius:2px;outline:none;cursor:pointer;display:block;
 }
 input[type=range]::-webkit-slider-thumb{
-  -webkit-appearance:none;
-  width:22px;height:22px;background:#fff;
-  border:2px solid var(--accent);border-radius:50%;
-  box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:pointer;
+  -webkit-appearance:none;width:22px;height:22px;background:#fff;
+  border:2px solid var(--accent);border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:pointer;
 }
 input[type=range]::-moz-range-thumb{
   width:22px;height:22px;background:#fff;
-  border:2px solid var(--accent);border-radius:50%;
-  box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:pointer;
+  border:2px solid var(--accent);border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:pointer;
 }
-
-/* ── Results / metrics ───────────────────────────────────────────────────── */
-.metric{background:var(--bg);border-radius:12px;padding:14px 16px}
-.metric-label{font-size:11px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.metric-value{
-  font-size:32px;font-weight:700;letter-spacing:-.5px;
-  font-variant-numeric:tabular-nums;
-  color:var(--accent);transition:color .2s;
+/* Regime selector */
+.regime-selector{display:flex;flex-direction:column;background:var(--bg);border-radius:12px;overflow:hidden;margin-top:12px}
+.regime-btn{
+  display:flex;flex-direction:column;align-items:flex-start;
+  padding:11px 16px 11px 13px;
+  background:transparent;border:none;
+  border-bottom:1px solid rgba(0,0,0,.06);
+  border-left:3px solid transparent;
+  cursor:pointer;font-family:inherit;width:100%;text-align:left;transition:background .15s;
 }
-.metric-value.positive{color:var(--positive)}
-.metric-value.negative{color:var(--negative)}
-.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-
-/* ── Yield rows ──────────────────────────────────────────────────────────── */
-.yield-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f0f0f0}
+.regime-btn:last-child{border-bottom:none}
+.regime-btn.active{background:#fff;border-left-color:var(--accent)}
+.regime-btn.active .regime-name{color:var(--accent)}
+.regime-btn.regime-disabled{opacity:.35;pointer-events:none}
+.regime-name{font-size:15px;font-weight:600;color:var(--text);line-height:1.3}
+.regime-desc{font-size:12px;color:var(--text2);margin-top:2px}
+/* Result rows */
+.yield-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f0f0f0}
 .yield-row:last-child{border-bottom:none}
-.yield-label{font-size:14px;color:var(--text2)}
-.yield-value{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--accent)}
+.yield-label{font-size:14px;color:var(--text2);flex:1}
+.yield-value{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--accent);flex-shrink:0;text-align:right}
 .yield-value.positive{color:var(--positive)}
 .yield-value.negative{color:var(--negative)}
-
-/* ── Regime cards ────────────────────────────────────────────────────────── */
-.regimes{display:flex;flex-direction:column;gap:10px}
-.regime-card{
-  background:var(--bg);border-radius:14px;
-  overflow:hidden;
-  border:1.5px solid transparent;
-  transition:border-color .2s,background .2s;
-}
-.regime-card.best{border-color:var(--positive);background:rgba(52,199,89,.06)}
-.regime-card.disabled{opacity:.4}
-.regime-top-bar{height:3px;width:100%}
-.regime-body{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px}
-.regime-left{flex:1}
-.regime-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
-.regime-rate{font-size:12px;color:var(--text2)}
-.regime-right{text-align:right}
-.regime-cf{font-size:28px;font-weight:700;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
-.regime-cf.positive{color:var(--positive)}
-.regime-cf.negative{color:var(--negative)}
-.best-badge{
-  display:inline-flex;align-items:center;gap:3px;
-  background:var(--positive);color:#fff;
-  font-size:11px;font-weight:700;
-  padding:3px 8px;border-radius:20px;margin-top:4px;
-}
-
-/* ── TRI ─────────────────────────────────────────────────────────────────── */
-.tri-value{font-size:52px;font-weight:700;letter-spacing:-1px;text-align:center;padding:8px 0;font-variant-numeric:tabular-nums}
-.tri-note{font-size:12px;color:var(--text2);text-align:center;margin-top:4px}
-
-/* ── Chart ───────────────────────────────────────────────────────────────── */
-.chart-wrap{position:relative;height:200px;margin-top:8px}
-
-/* ── Flash ───────────────────────────────────────────────────────────────── */
-@keyframes valueFlash{
-  0%{background:rgba(255,214,10,.4);border-radius:6px}
-  100%{background:transparent}
-}
+.yield-divider{height:1px;background:var(--border);margin:4px 0}
+/* Flash */
+@keyframes valueFlash{0%{background:rgba(255,214,10,.4);border-radius:6px}100%{background:transparent}}
 .flashing{animation:valueFlash .5s ease-out}
-
-/* ── Sticky bottom bar ───────────────────────────────────────────────────── */
+/* Sticky bar */
 .sticky-bar{
   position:fixed;bottom:0;left:0;right:0;
-  background:rgba(255,255,255,.88);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  background:rgba(255,255,255,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   border-top:1px solid rgba(0,0,0,.1);
   padding:10px 12px env(safe-area-inset-bottom);
-  display:flex;justify-content:space-around;align-items:center;
-  z-index:100;
+  display:flex;justify-content:space-around;align-items:center;z-index:100;
 }
 .sticky-item{text-align:center;flex:1}
 .sticky-label{font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
@@ -232,25 +133,15 @@ input[type=range]::-moz-range-thumb{
 .sticky-val.positive{color:var(--positive)}
 .sticky-val.negative{color:var(--negative)}
 .sticky-sep{width:1px;height:36px;background:var(--border);flex-shrink:0}
-
-/* ── Field pairs ─────────────────────────────────────────────────────────── */
+/* Field pairs */
 .field-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:380px){
-  .field-pair{grid-template-columns:1fr}
-  .summary-grid{grid-template-columns:1fr}
-}
+@media(max-width:380px){.field-pair{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<header class="app-header">
-  <h1>Renta</h1>
-  <p>Calculateur d'investissement locatif</p>
-</header>
-
 <div class="stack">
 
-<!-- Le bien -->
+<!-- 1. Le bien -->
 <div class="card">
   <div class="card-title">🏠 Le bien</div>
 
@@ -264,18 +155,28 @@ input[type=range]::-moz-range-thumb{
     </div>
   </div>
 
-  <div class="field">
-    <label>Type de bien</label>
-    <div class="segmented">
-      <button type="button" class="seg-btn active" onclick="setSeg('ancienNeuf','ancien',this)">Ancien</button>
-      <button type="button" class="seg-btn" onclick="setSeg('ancienNeuf','neuf',this)">Neuf</button>
+  <div class="field-pair">
+    <div class="field">
+      <label>Type de bien</label>
+      <div class="segmented">
+        <button type="button" class="seg-btn active" onclick="setSeg('ancienNeuf','ancien',this)">Ancien</button>
+        <button type="button" class="seg-btn" onclick="setSeg('ancienNeuf','neuf',this)">Neuf</button>
+      </div>
+      <input type="hidden" id="ancienNeuf" value="ancien">
     </div>
-    <input type="hidden" id="ancienNeuf" value="ancien">
+    <div class="field">
+      <label>Location</label>
+      <div class="segmented">
+        <button type="button" class="seg-btn active" onclick="setSeg('typeLocation','nue',this)">Nue</button>
+        <button type="button" class="seg-btn" onclick="setSeg('typeLocation','meublee',this)">Meublée</button>
+      </div>
+      <input type="hidden" id="typeLocation" value="nue">
+    </div>
   </div>
 
   <div id="notaireInfo" class="notaire-info"></div>
 
-  <div class="field" style="margin-top:16px">
+  <div class="field" style="margin-top:12px">
     <label for="travaux">Travaux</label>
     <div class="stepper-field">
       <button type="button" class="step-btn" data-field="travaux" data-step="-1000">−</button>
@@ -292,7 +193,7 @@ input[type=range]::-moz-range-thumb{
   </div>
 </div>
 
-<!-- Financement -->
+<!-- 2. Financement -->
 <div class="card">
   <div class="card-title">💰 Financement</div>
 
@@ -329,7 +230,7 @@ input[type=range]::-moz-range-thumb{
   </div>
 </div>
 
-<!-- Exploitation -->
+<!-- 3. Exploitation -->
 <div class="card">
   <div class="card-title">🏘️ Exploitation</div>
 
@@ -382,237 +283,158 @@ input[type=range]::-moz-range-thumb{
   </div>
 </div>
 
-<!-- Fiscalité -->
+<!-- 4. Régime fiscal -->
 <div class="card">
-  <div class="card-title">📊 Fiscalité</div>
-  <div class="field-pair">
-    <div class="field">
-      <label for="tmi">Tranche marginale (TMI)</label>
-      <select id="tmi">
-        <option value="0">0%</option>
-        <option value="0.11">11%</option>
-        <option value="0.30" selected>30%</option>
-        <option value="0.41">41%</option>
-        <option value="0.45">45%</option>
-      </select>
-    </div>
-    <div class="field">
-      <label for="typeLocation">Type de location</label>
-      <select id="typeLocation">
-        <option value="nue">Nue</option>
-        <option value="meublee">Meublée (LMNP)</option>
-      </select>
-    </div>
+  <div class="card-title">⚖️ Régime fiscal</div>
+
+  <div class="field">
+    <label for="tmi">Tranche marginale d'imposition</label>
+    <select id="tmi">
+      <option value="0">0%</option>
+      <option value="0.11">11%</option>
+      <option value="0.30" selected>30%</option>
+      <option value="0.41">41%</option>
+      <option value="0.45">45%</option>
+    </select>
   </div>
-</div>
 
-<!-- Résumé -->
-<div class="card">
-  <div class="card-title">📋 Résumé de l'opération</div>
-  <div class="summary-grid">
-    <div class="metric">
-      <div class="metric-label">Prix de revient</div>
-      <div class="metric-value" id="out-prixRevient">—</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Montant emprunté</div>
-      <div class="metric-value" id="out-emprunt">—</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Mensualité crédit</div>
-      <div class="metric-value" id="out-mensualite">—</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Effort d'épargne /mois</div>
-      <div class="metric-value" id="out-effort">—</div>
-    </div>
+  <div class="regime-selector">
+    <button type="button" class="regime-btn active" data-regime="micro-foncier" onclick="pickRegime(this)">
+      <span class="regime-name">Micro-foncier</span>
+      <span class="regime-desc">Abattement 30% — loc. nue ≤ 15 000 €/an</span>
+    </button>
+    <button type="button" class="regime-btn" data-regime="reel-nu" onclick="pickRegime(this)">
+      <span class="regime-name">Réel nu</span>
+      <span class="regime-desc">Déduction des charges réelles</span>
+    </button>
+    <button type="button" class="regime-btn" data-regime="micro-bic" onclick="pickRegime(this)">
+      <span class="regime-name">Micro-BIC</span>
+      <span class="regime-desc">Abattement 50% — meublé</span>
+    </button>
+    <button type="button" class="regime-btn" data-regime="lmnp-reel" onclick="pickRegime(this)">
+      <span class="regime-name">LMNP réel</span>
+      <span class="regime-desc">Amortissement du bien — meublé</span>
+    </button>
   </div>
-</div>
-
-<!-- Rentabilité -->
-<div class="card">
-  <div class="card-title">📈 Rentabilité</div>
-  <div class="yield-row">
-    <span class="yield-label">Brute (loyers / prix de revient)</span>
-    <span class="yield-value" id="out-rentaBrute">—</span>
-  </div>
-  <div class="yield-row">
-    <span class="yield-label">Nette (après charges &amp; vacance)</span>
-    <span class="yield-value" id="out-rentaNette">—</span>
-  </div>
-  <div class="yield-row">
-    <span class="yield-label">Cash-flow brut / mois</span>
-    <span class="yield-value" id="out-cfBrut">—</span>
-  </div>
-  <div class="yield-row">
-    <span class="yield-label">Cash-flow net / mois</span>
-    <span class="yield-value" id="out-cfNet">—</span>
-  </div>
-</div>
-
-<!-- Comparaison fiscale -->
-<div class="card">
-  <div class="card-title">⚖️ Régimes fiscaux</div>
-  <div class="regimes">
-
-    <div class="regime-card" id="card-microFoncier">
-      <div class="regime-top-bar" style="background:#af52de"></div>
-      <div class="regime-body">
-        <div class="regime-left">
-          <div class="regime-name">Nu — Micro-foncier</div>
-          <div class="regime-rate" id="rate-microFoncier"></div>
-          <span id="badge-microFoncier"></span>
-        </div>
-        <div class="regime-right">
-          <div class="regime-cf" id="cf-microFoncier">—</div>
-          <div style="font-size:11px;color:var(--text2)">/mois</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="regime-card" id="card-reel">
-      <div class="regime-top-bar" style="background:#0071e3"></div>
-      <div class="regime-body">
-        <div class="regime-left">
-          <div class="regime-name">Nu — Réel</div>
-          <div class="regime-rate" id="rate-reel"></div>
-          <span id="badge-reel"></span>
-        </div>
-        <div class="regime-right">
-          <div class="regime-cf" id="cf-reel">—</div>
-          <div style="font-size:11px;color:var(--text2)">/mois</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="regime-card" id="card-microBic">
-      <div class="regime-top-bar" style="background:#ff9500"></div>
-      <div class="regime-body">
-        <div class="regime-left">
-          <div class="regime-name">LMNP — Micro-BIC</div>
-          <div class="regime-rate" id="rate-microBic"></div>
-          <span id="badge-microBic"></span>
-        </div>
-        <div class="regime-right">
-          <div class="regime-cf" id="cf-microBic">—</div>
-          <div style="font-size:11px;color:var(--text2)">/mois</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="regime-card" id="card-lmnpReel">
-      <div class="regime-top-bar" style="background:#34c759"></div>
-      <div class="regime-body">
-        <div class="regime-left">
-          <div class="regime-name">LMNP — Réel</div>
-          <div class="regime-rate" id="rate-lmnpReel"></div>
-          <span id="badge-lmnpReel"></span>
-        </div>
-        <div class="regime-right">
-          <div class="regime-cf" id="cf-lmnpReel">—</div>
-          <div style="font-size:11px;color:var(--text2)">/mois</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-  <p style="font-size:11px;color:var(--text2);margin-top:12px">
-    * Prélèvements sociaux (17.2%) inclus. Micro-foncier limité à 15 000 €/an de loyers.
+  <p style="font-size:11px;color:var(--text2);margin-top:10px">
+    * PS 17.2% inclus. Cash-flow net-net calculé sur la base de l'année 1.
   </p>
 </div>
 
-<!-- TRI -->
+<!-- 5. Résultats -->
 <div class="card">
-  <div class="card-title">🎯 TRI — 10 ans</div>
-  <div class="tri-value" id="out-tri">—</div>
-  <div class="tri-note">Hypothèse : revente au prix d'achat, sans revalorisation du bien.</div>
-</div>
+  <div class="card-title">📋 Résultats</div>
 
-<!-- Graphique -->
-<div class="card">
-  <div class="card-title">📊 Cash-flow net sur 20 ans</div>
-  <div class="chart-wrap">
-    <canvas id="cfChart"></canvas>
+  <div class="yield-row">
+    <span class="yield-label">Prix de revient</span>
+    <span class="yield-value" id="out-prixRevient">—</span>
+  </div>
+  <div class="yield-row">
+    <span class="yield-label">Montant emprunté</span>
+    <span class="yield-value" id="out-emprunt">—</span>
+  </div>
+  <div class="yield-row">
+    <span class="yield-label">Mensualité crédit</span>
+    <span class="yield-value" id="out-mensualite">—</span>
+  </div>
+  <div class="yield-row">
+    <span class="yield-label">Effort d'épargne /mois</span>
+    <span class="yield-value" id="out-effort">—</span>
+  </div>
+
+  <div class="yield-divider"></div>
+
+  <div class="yield-row">
+    <span class="yield-label">Rentabilité brute</span>
+    <span class="yield-value" id="out-rentaBrute">—</span>
+  </div>
+  <div class="yield-row">
+    <span class="yield-label">Rentabilité nette</span>
+    <span class="yield-value" id="out-rentaNette">—</span>
+  </div>
+
+  <div class="yield-divider"></div>
+
+  <div class="yield-row">
+    <span class="yield-label">Cash-flow brut /mois</span>
+    <span class="yield-value" id="out-cfBrut">—</span>
+  </div>
+  <div class="yield-row">
+    <span class="yield-label">Cash-flow net /mois</span>
+    <span class="yield-value" id="out-cfNet">—</span>
+  </div>
+  <div class="yield-row">
+    <span class="yield-label">Cash-flow net-net /mois</span>
+    <span class="yield-value" id="out-cfNetNet">—</span>
+  </div>
+
+  <div class="yield-divider"></div>
+
+  <div class="yield-row">
+    <span class="yield-label">TRI 10 ans estimé</span>
+    <span class="yield-value" id="out-tri">—</span>
   </div>
 </div>
 
-</div><!-- end .stack -->
+</div><!-- .stack -->
 
-<!-- Sticky bottom bar -->
 <div class="sticky-bar">
   <div class="sticky-item">
-    <div class="sticky-label">Cash-flow net</div>
-    <div class="sticky-val" id="bar-cf">—</div>
-  </div>
-  <div class="sticky-sep"></div>
-  <div class="sticky-item">
-    <div class="sticky-label">Renta brute</div>
-    <div class="sticky-val" id="bar-rentaBrute">—</div>
+    <div class="sticky-label">CF net-net</div>
+    <div class="sticky-val" id="bar-cfNetNet">—</div>
   </div>
   <div class="sticky-sep"></div>
   <div class="sticky-item">
     <div class="sticky-label">Renta nette</div>
     <div class="sticky-val" id="bar-rentaNette">—</div>
   </div>
+  <div class="sticky-sep"></div>
+  <div class="sticky-item">
+    <div class="sticky-label">Effort épargne</div>
+    <div class="sticky-val" id="bar-effort">—</div>
+  </div>
 </div>
 
 <script>
-// ─── Helpers ──────────────────────────────────────────────────────────────
 const fmtEur = v => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
 const $ = id => document.getElementById(id);
 const parseM = id => { const el=$(id); return el ? parseInt((el.value||'0').replace(/\D/g,'')||'0',10) : 0; };
 const num = id => parseFloat($(id).value) || 0;
 
-// ─── Money input ──────────────────────────────────────────────────────────
+// ── Money input ────────────────────────────────────────────────────────────
 function onMoney(inp) {
-  const pos = inp.selectionStart;
-  const raw = inp.value;
-  let digitsBeforeCursor = 0;
-  for (let i = 0; i < pos; i++) { if (/\d/.test(raw[i])) digitsBeforeCursor++; }
+  const pos = inp.selectionStart, raw = inp.value;
+  let dbc = 0;
+  for (let i = 0; i < pos; i++) { if (/\d/.test(raw[i])) dbc++; }
   const digits = raw.replace(/\D/g,'');
   if (!digits) { inp.value = ''; calc(); return; }
-  const n = parseInt(digits, 10);
-  const formatted = n.toLocaleString('fr-FR');
+  const formatted = parseInt(digits,10).toLocaleString('fr-FR');
   let dc = 0, newPos = 0;
   for (let i = 0; i < formatted.length; i++) {
     if (/\d/.test(formatted[i])) dc++;
-    if (dc === digitsBeforeCursor) { newPos = i + 1; break; }
+    if (dc === dbc) { newPos = i+1; break; }
   }
-  if (dc < digitsBeforeCursor) newPos = formatted.length;
+  if (dc < dbc) newPos = formatted.length;
   inp.value = formatted;
   inp.setSelectionRange(newPos, newPos);
   calc();
 }
 
-// ─── Stepper logic ────────────────────────────────────────────────────────
-let _pressTimer = null, _pressInterval = null;
-
-function stepField(fieldId, delta) {
-  const inp = $(fieldId);
-  if (!inp) return;
-  const cur = parseInt((inp.value||'0').replace(/\D/g,'')||'0', 10);
-  const next = Math.max(0, cur + delta);
-  inp.value = next.toLocaleString('fr-FR');
+// ── Stepper ────────────────────────────────────────────────────────────────
+let _pt = null, _pi = null;
+function stepField(id, delta) {
+  const inp = $(id); if (!inp) return;
+  inp.value = Math.max(0, parseInt((inp.value||'0').replace(/\D/g,'')||'0',10) + delta).toLocaleString('fr-FR');
   calc();
 }
-
 function startPress(btn) {
-  const fieldId = btn.dataset.field;
-  const delta = parseInt(btn.dataset.step, 10);
-  stepField(fieldId, delta);
-  _pressTimer = setTimeout(() => {
-    _pressInterval = setInterval(() => stepField(fieldId, delta), 100);
-  }, 500);
+  const id = btn.dataset.field, d = parseInt(btn.dataset.step,10);
+  stepField(id, d);
+  _pt = setTimeout(() => { _pi = setInterval(() => stepField(id, d), 100); }, 500);
 }
+function endPress() { clearTimeout(_pt); clearInterval(_pi); _pt=null; _pi=null; }
 
-function endPress() {
-  clearTimeout(_pressTimer);
-  clearInterval(_pressInterval);
-  _pressTimer = null;
-  _pressInterval = null;
-}
-
-// ─── Segmented control ────────────────────────────────────────────────────
+// ── Segmented ──────────────────────────────────────────────────────────────
 function setSeg(hiddenId, val, btn) {
   $(hiddenId).value = val;
   btn.closest('.segmented').querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
@@ -620,98 +442,101 @@ function setSeg(hiddenId, val, btn) {
   calc();
 }
 
-// ─── Flash ────────────────────────────────────────────────────────────────
+// ── Regime selector ────────────────────────────────────────────────────────
+let selectedRegime = 'micro-foncier';
+
+function pickRegime(btn) {
+  if (btn.classList.contains('regime-disabled')) return;
+  selectedRegime = btn.dataset.regime;
+  calc();
+}
+
+function taxForRegime(regime, loyerEff, intTot, chargesAn, travaux, prix, tmi, PS) {
+  const amortT = travaux / 10, amortB = prix * 0.03;
+  switch (regime) {
+    case 'micro-foncier': return Math.max(0, loyerEff * 0.70) * (tmi + PS);
+    case 'reel-nu':       return Math.max(0, loyerEff - intTot - chargesAn - amortT) * (tmi + PS);
+    case 'micro-bic':     return Math.max(0, loyerEff * 0.50) * (tmi + PS);
+    case 'lmnp-reel':
+    default:              return Math.max(0, loyerEff - intTot - chargesAn - amortB - amortT) * (tmi + PS);
+  }
+}
+
+// ── Flash ──────────────────────────────────────────────────────────────────
 function flash(id) {
-  const e = $(id);
-  if (!e) return;
-  e.classList.remove('flashing');
-  void e.offsetWidth;
-  e.classList.add('flashing');
+  const e=$(id); if (!e) return;
+  e.classList.remove('flashing'); void e.offsetWidth; e.classList.add('flashing');
 }
 
-// ─── Duration slider fill ─────────────────────────────────────────────────
-function updateSliderFill(slider) {
-  const min = parseFloat(slider.min), max = parseFloat(slider.max), val = parseFloat(slider.value);
-  const pct = max > min ? ((val - min) / (max - min)) * 100 : 0;
-  slider.style.setProperty('--pct', pct.toFixed(2) + '%');
+// ── Slider fill ────────────────────────────────────────────────────────────
+function updateSliderFill(s) {
+  const pct = (parseFloat(s.max)-parseFloat(s.min)) > 0
+    ? ((parseFloat(s.value)-parseFloat(s.min))/(parseFloat(s.max)-parseFloat(s.min)))*100 : 0;
+  s.style.setProperty('--pct', pct.toFixed(2)+'%');
 }
 
-// ─── Math helpers ─────────────────────────────────────────────────────────
-function pmt(principal, annualRate, years) {
-  if (annualRate === 0) return principal / (years * 12);
-  const r = annualRate / 100 / 12, n = years * 12;
-  return principal * r * Math.pow(1+r,n) / (Math.pow(1+r,n) - 1);
+// ── Math ───────────────────────────────────────────────────────────────────
+function pmt(p, rate, yrs) {
+  if (rate===0) return p/(yrs*12);
+  const r=rate/100/12, n=yrs*12;
+  return p*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
 }
 
-function amortYear(principal, annualRate, years, year) {
-  if (principal <= 0) return { interets: 0, solde: 0 };
-  const r = annualRate / 100 / 12, n = years * 12;
-  const m = pmt(principal, annualRate, years);
-  const startMonth = (year-1)*12+1, endMonth = year*12;
-  let solde;
-  if (r > 0) {
-    const k = startMonth-1;
-    solde = principal * Math.pow(1+r,k) - m * (Math.pow(1+r,k)-1) / r;
-  } else {
-    solde = principal - m * (startMonth-1);
+function amortYear(p, rate, yrs, yr) {
+  if (p<=0) return {interets:0};
+  const r=rate/100/12, n=yrs*12, m=pmt(p,rate,yrs);
+  const s0=yr-1, e0=yr;
+  let solde = r>0
+    ? p*Math.pow(1+r,s0*12) - m*(Math.pow(1+r,s0*12)-1)/r
+    : p - m*(s0*12);
+  if (solde<0) return {interets:0};
+  let interets=0;
+  for (let i=s0*12+1; i<=Math.min(e0*12,n); i++) {
+    const im=solde*r; interets+=im; solde-=(m-im); if(solde<0)solde=0;
   }
-  if (solde < 0) return { interets: 0, solde: 0 };
-  let interets = 0;
-  for (let i = startMonth; i <= Math.min(endMonth, n); i++) {
-    const intM = solde * r;
-    interets += intM;
-    solde -= (m - intM);
-    if (solde < 0) solde = 0;
-  }
-  return { interets, solde: Math.max(0, solde) };
+  return {interets};
 }
 
-function soldeDu(principal, annualRate, years, months) {
-  if (principal <= 0) return 0;
-  if (annualRate === 0) return Math.max(0, principal - pmt(principal,0,years)*months);
-  const r = annualRate/100/12, n = years*12;
-  const m = pmt(principal, annualRate, years), k = Math.min(months, n);
-  return Math.max(0, principal*Math.pow(1+r,k) - m*(Math.pow(1+r,k)-1)/r);
+function soldeDu(p, rate, yrs, months) {
+  if (p<=0) return 0;
+  if (rate===0) return Math.max(0, p-pmt(p,0,yrs)*months);
+  const r=rate/100/12, n=yrs*12, m=pmt(p,rate,yrs), k=Math.min(months,n);
+  return Math.max(0, p*Math.pow(1+r,k)-m*(Math.pow(1+r,k)-1)/r);
 }
 
-function irr(cashflows, guess = 0.1) {
-  let r = guess;
-  for (let iter = 0; iter < 200; iter++) {
-    let npv = 0, dnpv = 0;
-    for (let t = 0; t < cashflows.length; t++) {
-      npv  += cashflows[t] / Math.pow(1+r, t);
-      dnpv -= t * cashflows[t] / Math.pow(1+r, t+1);
+function irr(cfs, guess=0.1) {
+  let r=guess;
+  for (let i=0;i<200;i++) {
+    let npv=0,dnpv=0;
+    for (let t=0;t<cfs.length;t++) {
+      npv+=cfs[t]/Math.pow(1+r,t);
+      dnpv-=t*cfs[t]/Math.pow(1+r,t+1);
     }
-    if (Math.abs(dnpv) < 1e-10) break;
-    const rNew = r - npv / dnpv;
-    if (Math.abs(rNew - r) < 1e-8) { r = rNew; break; }
-    r = rNew;
-    if (r < -0.999) r = -0.5;
+    if (Math.abs(dnpv)<1e-10) break;
+    const rn=r-npv/dnpv;
+    if (Math.abs(rn-r)<1e-8){r=rn;break;}
+    r=rn; if(r<-0.999)r=-0.5;
   }
   return r;
 }
 
 function notaireEmoluments(prix) {
-  const tranches = [[0,6500,0.03945],[6500,17000,0.01627],[17000,60000,0.01085],[60000,Infinity,0.00814]];
-  let e = 0;
-  for (const [lo, hi, rate] of tranches) {
-    if (prix > lo) e += (Math.min(prix, hi) - lo) * rate;
-  }
-  return e * 1.20;
+  const t=[[0,6500,.03945],[6500,17000,.01627],[17000,60000,.01085],[60000,Infinity,.00814]];
+  let e=0;
+  for (const [lo,hi,rate] of t) if(prix>lo) e+=(Math.min(prix,hi)-lo)*rate;
+  return e*1.20;
 }
 
 function fraisNotaire(prix, type) {
-  const emoluments = notaireEmoluments(prix), debours = 1200, contrib = prix * 0.00715;
-  if (type === 'neuf') return emoluments + debours + contrib;
-  return prix * 0.0580665 + emoluments + debours + contrib;
+  const e=notaireEmoluments(prix), d=1200, c=prix*0.00715;
+  return type==='neuf' ? e+d+c : prix*0.0580665+e+d+c;
 }
 
-// ─── Main calculation ─────────────────────────────────────────────────────
-let chartInstance = null;
-
+// ── Main calc ──────────────────────────────────────────────────────────────
 function calc() {
   const prix    = parseM('prix');
-  const type    = $('ancienNeuf').value;
+  const typeB   = $('ancienNeuf').value;
+  const typeL   = $('typeLocation').value;
   const travaux = parseM('travaux');
   const agence  = parseM('agence');
   const apport  = parseM('apport');
@@ -727,17 +552,15 @@ function calc() {
   const tmi     = parseFloat($('tmi').value);
   const PS      = 0.172;
 
-  // Frais de notaire
-  const notaire    = fraisNotaire(prix, type);
-  const pctNotaire = prix > 0 ? notaire / prix * 100 : 0;
+  // Notaire
+  const notaire    = fraisNotaire(prix, typeB);
+  const pctNotaire = prix > 0 ? notaire/prix*100 : 0;
   const ni = $('notaireInfo');
   if (prix > 0) {
     ni.innerHTML = `<strong>Frais de notaire estimés : ${fmtEur(notaire)}</strong> (${pctNotaire.toFixed(1)}%)<br>`
       + `<small>Droits de mutation + émoluments + débours + contrib. sécurité immobilière.</small>`;
     ni.classList.add('visible');
-  } else {
-    ni.classList.remove('visible');
-  }
+  } else { ni.classList.remove('visible'); }
 
   // Opération
   const prixRevient     = prix + notaire + travaux + agence;
@@ -752,209 +575,108 @@ function calc() {
   const chargesAnnuelles = charges * 12 + tfAn + pnoAn + loyerEffectif * gestion;
   const loyerNet         = loyerEffectif - chargesAnnuelles;
 
-  // Rentabilités
+  // Rendements avant impôt
   const rentaBrute = prixRevient > 0 ? loyerAnnuel / prixRevient * 100 : 0;
   const rentaNette = prixRevient > 0 ? loyerNet / prixRevient * 100 : 0;
   const cfBrut     = loyer - mensualiteTotal;
   const cfNet      = loyerNet / 12 - mensualiteTotal;
+  const effort     = mensualiteTotal - loyerNet / 12;
 
-  // Résumé
+  // Regime compatibility
+  const compat = {
+    'micro-foncier': typeL === 'nue' && loyerAnnuel < 15000,
+    'reel-nu':       typeL === 'nue',
+    'micro-bic':     typeL === 'meublee',
+    'lmnp-reel':     typeL === 'meublee',
+  };
+  if (!compat[selectedRegime]) {
+    selectedRegime = typeL === 'nue' ? 'reel-nu' : 'lmnp-reel';
+  }
+  document.querySelectorAll('.regime-btn').forEach(btn => {
+    const r = btn.dataset.regime;
+    btn.classList.toggle('active', r === selectedRegime);
+    btn.classList.toggle('regime-disabled', !compat[r]);
+  });
+
+  // Tax year 1 for selected regime
+  const { interets: iAn1 } = amortYear(emprunt, tauxE, duree, 1);
+  const intTotAn1 = iAn1 + assEmpAnnuelle;
+  const taxAn1    = taxForRegime(selectedRegime, loyerEffectif, intTotAn1, chargesAnnuelles, travaux, prix, tmi, PS);
+  const cfNetNet  = (loyerNet - taxAn1) / 12 - mensualiteTotal;
+
+  // Outputs
   setVal('out-prixRevient', fmtEur(prixRevient));
   setVal('out-emprunt',     fmtEur(emprunt));
   setVal('out-mensualite',  fmtEur(mensualiteTotal));
-  setColored('out-effort',  fmtEur(mensualiteTotal - loyerNet/12),
-    mensualiteTotal - loyerNet/12 <= 0 ? 'positive' : 'negative');
-
-  // Rentabilité
-  setVal('out-rentaBrute', rentaBrute.toFixed(2) + '%');
-  setColored('out-rentaNette', rentaNette.toFixed(2) + '%', rentaNette >= 0 ? '' : 'negative');
-  setColored('out-cfBrut', fmtEur(cfBrut), cfBrut >= 0 ? 'positive' : 'negative');
-  setColored('out-cfNet',  fmtEur(cfNet),  cfNet  >= 0 ? 'positive' : 'negative');
+  setColored('out-effort',    fmtEur(effort),               effort    <= 0 ? 'positive' : 'negative');
+  setVal('out-rentaBrute',    rentaBrute.toFixed(2) + '%');
+  setColored('out-rentaNette',rentaNette.toFixed(2) + '%',  rentaNette >= 0 ? '' : 'negative');
+  setColored('out-cfBrut',    fmtEur(cfBrut),               cfBrut    >= 0 ? 'positive' : 'negative');
+  setColored('out-cfNet',     fmtEur(cfNet),                cfNet     >= 0 ? 'positive' : 'negative');
+  setColored('out-cfNetNet',  fmtEur(cfNetNet),             cfNetNet  >= 0 ? 'positive' : 'negative');
 
   // Sticky bar
-  setBarVal('bar-cf',         fmtEur(cfNet),               cfNet      >= 0 ? 'positive' : 'negative');
-  setBarVal('bar-rentaBrute', rentaBrute.toFixed(1) + '%', rentaBrute >= 5 ? 'positive' : '');
+  setBarVal('bar-cfNetNet',   fmtEur(cfNetNet),            cfNetNet  >= 0 ? 'positive' : 'negative');
   setBarVal('bar-rentaNette', rentaNette.toFixed(1) + '%', rentaNette >= 0 ? '' : 'negative');
+  setBarVal('bar-effort',     fmtEur(effort),              effort    <= 0 ? 'positive' : 'negative');
 
-  // Intérêts an 1
-  const { interets: interetsAn1 } = amortYear(emprunt, tauxE, duree, 1);
-  const interetsAn1Total = interetsAn1 + assEmpAnnuelle;
-
-  // ── Régimes fiscaux ───────────────────────────────────────────────────
-  const microFoncierOK = loyerAnnuel < 15000;
-  let cfMF = null, effMF = null;
-  if (microFoncierOK) {
-    const tax = Math.max(0, loyerEffectif * 0.70) * (tmi + PS);
-    cfMF  = (loyerNet - tax) / 12 - mensualiteTotal;
-    effMF = loyerEffectif > 0 ? tax / loyerEffectif : 0;
-  }
-
-  const taxReelNu  = Math.max(0, loyerEffectif - interetsAn1Total - chargesAnnuelles - travaux/10) * (tmi + PS);
-  const cfReelNu   = (loyerNet - taxReelNu) / 12 - mensualiteTotal;
-  const effReelNu  = loyerEffectif > 0 ? taxReelNu / loyerEffectif : 0;
-
-  const taxMicroBic  = Math.max(0, loyerEffectif * 0.50) * (tmi + PS);
-  const cfMicroBic   = (loyerNet - taxMicroBic) / 12 - mensualiteTotal;
-  const effMicroBic  = loyerEffectif > 0 ? taxMicroBic / loyerEffectif : 0;
-
-  const amortBien    = prix * 0.03;
-  const amortTravaux = travaux / 10;
-  const taxLMNP      = Math.max(0, loyerEffectif - interetsAn1Total - chargesAnnuelles - amortBien - amortTravaux) * (tmi + PS);
-  const cfLMNP       = (loyerNet - taxLMNP) / 12 - mensualiteTotal;
-  const effLMNP      = loyerEffectif > 0 ? taxLMNP / loyerEffectif : 0;
-
-  const candidates = [
-    { id: 'microFoncier', cf: microFoncierOK ? cfMF : -Infinity },
-    { id: 'reel',         cf: cfReelNu },
-    { id: 'microBic',     cf: cfMicroBic },
-    { id: 'lmnpReel',     cf: cfLMNP },
-  ];
-  const bestCf = Math.max(...candidates.filter(c => isFinite(c.cf)).map(c => c.cf));
-
-  renderRegime('microFoncier', microFoncierOK ? cfMF : null, effMF,      bestCf, !microFoncierOK, 'Non éligible (loyers ≥ 15 000 €/an)');
-  renderRegime('reel',         cfReelNu,  effReelNu,  bestCf);
-  renderRegime('microBic',     cfMicroBic,effMicroBic,bestCf);
-  renderRegime('lmnpReel',     cfLMNP,    effLMNP,    bestCf);
-
-  // ── TRI 10 ans ────────────────────────────────────────────────────────
+  // TRI 10 ans
   const cfs = [-apport];
   for (let y = 1; y <= 10; y++) {
     const { interets } = amortYear(emprunt, tauxE, duree, y);
-    const intTot = interets + assEmpAnnuelle;
-    const taxY   = Math.max(0, loyerEffectif - intTot - chargesAnnuelles - amortBien - amortTravaux) * (tmi + PS);
+    const taxY = taxForRegime(selectedRegime, loyerEffectif, interets+assEmpAnnuelle, chargesAnnuelles, travaux, prix, tmi, PS);
     cfs.push(loyerNet - taxY - mensualiteTotal * 12);
   }
   const solde10 = soldeDu(emprunt, tauxE, duree, Math.min(duree*12, 120));
   cfs[10] += prix - solde10;
 
-  let triVal = null;
-  if (apport > 0 && emprunt > 0) {
-    try { triVal = irr(cfs, 0.08); } catch(e) {}
-  }
   const triEl = $('out-tri');
+  let triVal = null;
+  if (apport > 0 && emprunt > 0) { try { triVal = irr(cfs, 0.08); } catch(e) {} }
   if (triVal !== null && isFinite(triVal) && triVal > -1 && triVal < 5) {
-    triEl.textContent = (triVal * 100).toFixed(1) + '%';
-    triEl.style.color = triVal >= 0.05 ? 'var(--positive)' : triVal >= 0 ? 'var(--accent)' : 'var(--negative)';
+    triEl.textContent = (triVal*100).toFixed(1) + '%';
+    triEl.className = 'yield-value' + (triVal >= 0.05 ? ' positive' : triVal < 0 ? ' negative' : '');
   } else {
-    triEl.textContent = '—';
-    triEl.style.color = 'var(--accent)';
+    triEl.textContent = '—'; triEl.className = 'yield-value';
   }
-
-  // ── Chart 20 ans ──────────────────────────────────────────────────────
-  const labels = [], data = [];
-  for (let y = 1; y <= 20; y++) {
-    labels.push('An ' + y);
-    const { interets } = amortYear(emprunt, tauxE, duree, y);
-    const intTot = interets + assEmpAnnuelle;
-    const taxY   = Math.max(0, loyerEffectif - intTot - chargesAnnuelles - amortBien - amortTravaux) * (tmi + PS);
-    const mensY  = y <= duree ? mensualiteTotal * 12 : 0;
-    data.push(Math.round(loyerNet - taxY - mensY));
-  }
-  renderChart(labels, data);
 }
 
-// ─── DOM helpers ──────────────────────────────────────────────────────────
+// ── DOM helpers ────────────────────────────────────────────────────────────
 function setVal(id, val) {
-  const e = $(id);
-  if (e.textContent !== val) { e.textContent = val; flash(id); }
+  const e=$(id); if (e.textContent!==val){e.textContent=val;flash(id);}
 }
 function setColored(id, val, cls) {
-  const e = $(id), changed = e.textContent !== val;
-  e.textContent = val;
-  e.className = e.className.replace(/\b(positive|negative)\b/g,'').trim();
-  if (cls) e.classList.add(cls);
-  if (changed) flash(id);
+  const e=$(id), changed=e.textContent!==val;
+  e.textContent=val;
+  e.className='yield-value'+(cls?' '+cls:'');
+  if(changed)flash(id);
 }
 function setBarVal(id, val, cls) {
-  const e = $(id), changed = e.textContent !== val;
-  e.textContent = val;
-  e.className = 'sticky-val' + (cls ? ' ' + cls : '');
-  if (changed) flash(id);
+  const e=$(id), changed=e.textContent!==val;
+  e.textContent=val;
+  e.className='sticky-val'+(cls?' '+cls:'');
+  if(changed)flash(id);
 }
 
-function renderRegime(key, cf, eff, bestCf, disabled, disabledMsg) {
-  const card   = $('card-' + key);
-  const cfEl   = $('cf-'   + key);
-  const rateEl = $('rate-' + key);
-  const badge  = $('badge-'+ key);
-  card.classList.remove('best', 'disabled');
-  badge.innerHTML = '';
-  if (disabled || cf === null) {
-    cfEl.textContent   = 'N/A';
-    cfEl.className     = 'regime-cf';
-    rateEl.textContent = disabledMsg || '';
-    card.classList.add('disabled');
-    return;
-  }
-  cfEl.textContent   = fmtEur(cf);
-  cfEl.className     = 'regime-cf ' + (cf >= 0 ? 'positive' : 'negative');
-  rateEl.textContent = 'Taux effectif : ' + (eff * 100).toFixed(1) + '%';
-  if (Math.abs(cf - bestCf) < 0.01) {
-    card.classList.add('best');
-    badge.innerHTML = '<span class="best-badge">★ Optimal</span>';
-  }
-}
-
-function renderChart(labels, data) {
-  const ctx = $('cfChart').getContext('2d');
-  if (chartInstance) chartInstance.destroy();
-  chartInstance = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [{
-        label: 'Cash-flow net annuel (€)',
-        data,
-        backgroundColor: data.map(v => v >= 0 ? 'rgba(52,199,89,.75)' : 'rgba(255,59,48,.75)'),
-        borderRadius: 5,
-        borderSkipped: false,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: { callbacks: { label: ctx => fmtEur(ctx.parsed.y) } }
-      },
-      scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
-        y: {
-          grid: { color: 'rgba(0,0,0,.05)' },
-          ticks: { font: { size: 10 }, callback: v => fmtEur(v) }
-        }
-      }
-    }
-  });
-}
-
-// ─── Init ─────────────────────────────────────────────────────────────────
+// ── Init ───────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  // Format all money inputs
   document.querySelectorAll('.money-input').forEach(inp => {
-    const n = parseInt((inp.value||'0').replace(/\D/g,'')||'0', 10);
+    const n = parseInt((inp.value||'0').replace(/\D/g,'')||'0',10);
     inp.value = n > 0 ? n.toLocaleString('fr-FR') : '0';
   });
-
-  // Wire stepper buttons
   document.querySelectorAll('.step-btn').forEach(btn => {
     btn.addEventListener('mousedown',   () => startPress(btn));
-    btn.addEventListener('touchstart',  e => { e.preventDefault(); startPress(btn); }, { passive: false });
+    btn.addEventListener('touchstart',  e => { e.preventDefault(); startPress(btn); }, {passive:false});
     btn.addEventListener('mouseup',     endPress);
     btn.addEventListener('mouseleave',  endPress);
     btn.addEventListener('touchend',    endPress);
     btn.addEventListener('touchcancel', endPress);
   });
-
-  // Init duration slider
   updateSliderFill($('duree'));
-
-  // Wire number inputs and selects
   document.querySelectorAll('input[type=number], select').forEach(inp => {
     inp.addEventListener('input',  calc);
     inp.addEventListener('change', calc);
   });
-
   calc();
 });
 </script>
