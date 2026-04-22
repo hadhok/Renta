@@ -122,17 +122,19 @@ input[type=range]::-moz-range-thumb{
 /* Sticky bar */
 .sticky-bar{
   position:fixed;bottom:0;left:0;right:0;
-  background:rgba(255,255,255,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  background:rgba(255,255,255,.98);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   border-top:1px solid rgba(0,0,0,.1);
-  padding:10px 12px env(safe-area-inset-bottom);
+  padding:0 12px;
+  padding-bottom:env(safe-area-inset-bottom);
+  height:calc(80px + env(safe-area-inset-bottom));
   display:flex;justify-content:space-around;align-items:center;z-index:100;
 }
 .sticky-item{text-align:center;flex:1}
-.sticky-label{font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
-.sticky-val{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;transition:color .2s;line-height:1.2}
+.sticky-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.sticky-val{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;transition:color .2s;line-height:1.2}
 .sticky-val.positive{color:var(--positive)}
 .sticky-val.negative{color:var(--negative)}
-.sticky-sep{width:1px;height:36px;background:var(--border);flex-shrink:0}
+.sticky-sep{width:1px;height:44px;background:var(--border);flex-shrink:0}
 /* Field pairs */
 .field-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:380px){.field-pair{grid-template-columns:1fr}}
@@ -201,8 +203,8 @@ input[type=range]::-moz-range-thumb{
     <label for="apport">Apport</label>
     <div class="stepper-field">
       <button type="button" class="step-btn" data-field="apport" data-step="-1000">−</button>
-      <input type="text" id="apport" value="40000" inputmode="decimal" class="money-input"
-             oninput="onMoney(this)" placeholder="40 000">
+      <input type="text" id="apport" value="30000" inputmode="decimal" class="money-input"
+             oninput="onMoney(this)" placeholder="30 000">
       <button type="button" class="step-btn" data-field="apport" data-step="1000">+</button>
     </div>
   </div>
@@ -215,7 +217,7 @@ input[type=range]::-moz-range-thumb{
     </div>
     <div class="field">
       <label for="assuranceEmprunt">Assurance (%/an)</label>
-      <input type="number" id="assuranceEmprunt" value="0.36" min="0" max="2" step="0.01" inputmode="decimal">
+      <input type="number" id="assuranceEmprunt" value="0.10" min="0" max="2" step="0.01" inputmode="decimal">
       <div class="hint">Entre 0.20% et 0.50%</div>
     </div>
   </div>
@@ -223,9 +225,9 @@ input[type=range]::-moz-range-thumb{
   <div class="field">
     <div class="duree-row">
       <label>Durée</label>
-      <span class="duree-val" id="dureeLabel">20 ans</span>
+      <span class="duree-val" id="dureeLabel">25 ans</span>
     </div>
-    <input type="range" id="duree" min="5" max="30" value="20" step="1"
+    <input type="range" id="duree" min="5" max="30" value="25" step="1"
            oninput="$('dureeLabel').textContent=this.value+' ans';updateSliderFill(this);calc()">
   </div>
 </div>
@@ -238,8 +240,8 @@ input[type=range]::-moz-range-thumb{
     <label for="loyer">Loyer mensuel</label>
     <div class="stepper-field">
       <button type="button" class="step-btn" data-field="loyer" data-step="-50">−</button>
-      <input type="text" id="loyer" value="900" inputmode="decimal" class="money-input"
-             oninput="onMoney(this)" placeholder="900">
+      <input type="text" id="loyer" value="800" inputmode="decimal" class="money-input"
+             oninput="onMoney(this)" placeholder="800">
       <button type="button" class="step-btn" data-field="loyer" data-step="50">+</button>
     </div>
   </div>
@@ -380,7 +382,7 @@ input[type=range]::-moz-range-thumb{
 
 <div class="sticky-bar">
   <div class="sticky-item">
-    <div class="sticky-label">CF net-net</div>
+    <div class="sticky-label">CF net-net/mois</div>
     <div class="sticky-val" id="bar-cfNetNet">—</div>
   </div>
   <div class="sticky-sep"></div>
@@ -390,8 +392,8 @@ input[type=range]::-moz-range-thumb{
   </div>
   <div class="sticky-sep"></div>
   <div class="sticky-item">
-    <div class="sticky-label">Effort épargne</div>
-    <div class="sticky-val" id="bar-effort">—</div>
+    <div class="sticky-label">Renta brute</div>
+    <div class="sticky-val" id="bar-rentaBrute">—</div>
   </div>
 </div>
 
@@ -618,7 +620,7 @@ function calc() {
   // Sticky bar
   setBarVal('bar-cfNetNet',   fmtEur(cfNetNet),            cfNetNet  >= 0 ? 'positive' : 'negative');
   setBarVal('bar-rentaNette', rentaNette.toFixed(1) + '%', rentaNette >= 0 ? '' : 'negative');
-  setBarVal('bar-effort',     fmtEur(effort),              effort    <= 0 ? 'positive' : 'negative');
+  setBarVal('bar-rentaBrute', rentaBrute.toFixed(1) + '%', '');
 
   // TRI 10 ans
   const cfs = [-apport];
